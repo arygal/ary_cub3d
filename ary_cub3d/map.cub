@@ -1,0 +1,10 @@
+R 100 720
+
+SO ./minilibx/font.c
+NO ./minilibx/font.c
+EA ./minilibx/font.c
+WE ./minilibx/font.c
+S ./minilibx/font.c
+
+C 255,200,160
+F 122,122,122
