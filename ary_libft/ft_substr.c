@@ -1,21 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/11/15 18:56:16 by megen             #+#    #+#             */
+/*   Updated: 2020/11/15 18:56:18 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	free(line);
-	return(0);
-}
+	char	*ret;
+	size_t	ct;
+	size_t	slen;
 
-/* it is free but it returns 0  */
+	if (!s)
+		return ((void *)0);
+	slen = ft_strlen(s);
+	if (slen < start)
+		return (ret = (char *)ft_calloc(1, 1));
+	ret = (char *)ft_calloc(len + 1, sizeof(char));
+	if (!ret)
+		return ((void *)0);
+	ct = 0;
+	while (ct < len)
+		ret[ct++] = s[start++];
+	return (ret);
+}

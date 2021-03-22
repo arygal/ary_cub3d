@@ -1,21 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/11/01 13:54:58 by megen             #+#    #+#             */
+/*   Updated: 2020/11/01 13:55:03 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	free(line);
-	return(0);
-}
+	unsigned	char	*cstsrc;
+	unsigned	char	chr;
+	size_t				ct;
 
-/* it is free but it returns 0  */
+	ct = 0;
+	cstsrc = (unsigned char*)s;
+	chr = c;
+	while (n > 0)
+	{
+		n--;
+		if (cstsrc[ct] == chr)
+			return ((void*)&cstsrc[ct]);
+		ct++;
+	}
+	return ((void *)0);
+}

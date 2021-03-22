@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/11/13 17:37:53 by megen             #+#    #+#             */
+/*   Updated: 2020/11/13 17:37:56 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+int	ft_isdigit(int c)
 {
-	free(line);
-	return(0);
+	if (c > 47 && c < 58)
+		return (1);
+	return (0);
 }
-
-/* it is free but it returns 0  */

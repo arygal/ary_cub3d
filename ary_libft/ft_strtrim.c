@@ -1,34 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lib_func_tail.c                                    :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/17 20:11:55 by megen             #+#    #+#             */
-/*   Updated: 2021/03/17 20:24:58 by megen            ###   ########.fr       */
+/*   Created: 2020/11/15 19:58:17 by megen             #+#    #+#             */
+/*   Updated: 2020/11/15 19:58:18 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
-
-char			*ft_strdup(const char *s1)
-{
-	int		lenchar;
-	char	*malchar;
-
-	lenchar = ft_strlen(s1);
-	malchar = (char *)malloc(sizeof(char) * lenchar + 1);
-	if (malchar == (void *)0)
-		return (malchar);
-	while (lenchar >= 0)
-	{
-		malchar[lenchar] = s1[lenchar];
-		--lenchar;
-	}
-	return (malchar);
-}
-
+#include "libft.h"
 
 static	size_t	ft_strtrim_chk(char s, char const *set)
 {

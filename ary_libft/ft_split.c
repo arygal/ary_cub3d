@@ -1,26 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lib_func_head.c                                    :+:      :+:    :+:   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 20:04:09 by megen             #+#    #+#             */
-/*   Updated: 2021/03/16 22:42:30 by megen            ###   ########.fr       */
+/*   Created: 2020/11/26 10:57:12 by megen             #+#    #+#             */
+/*   Updated: 2020/11/26 10:57:14 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
-
-size_t	ft_strlen(const char *s)
-{
-	size_t a;
-
-	a = 0;
-	while (s[a] != '\0')
-		a++;
-	return (a);
-}
+#include "libft.h"
 
 static	size_t	ft_split_wctandpos(char const *s, char c, size_t nc)
 {
@@ -51,7 +41,7 @@ static	size_t	ft_split_wctandpos(char const *s, char c, size_t nc)
 	return (wct);
 }
 
-char	**ft_split_free(char **ret)
+static	char	**ft_split_free(char **ret)
 {
 	size_t	ct;
 

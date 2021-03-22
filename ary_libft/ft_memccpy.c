@@ -1,21 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_memccpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/10/31 17:40:50 by megen             #+#    #+#             */
+/*   Updated: 2020/10/31 17:40:52 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 {
-	free(line);
-	return(0);
-}
+	size_t				ct;
+	unsigned	char	*cstsrc;
+	unsigned	char	*cstdst;
 
-/* it is free but it returns 0  */
+	cstsrc = (unsigned char*)src;
+	cstdst = (unsigned char*)dst;
+	ct = 0;
+	while (ct < n)
+	{
+		cstdst[ct] = cstsrc[ct];
+		if (cstsrc[ct] == (unsigned char)c)
+			return (&dst[ct + 1]);
+		ct++;
+	}
+	return ((void *)0);
+}

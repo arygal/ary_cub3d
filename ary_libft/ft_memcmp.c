@@ -1,21 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/11/01 16:18:19 by megen             #+#    #+#             */
+/*   Updated: 2020/11/01 16:18:22 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	free(line);
-	return(0);
-}
+	unsigned char	*st1;
+	unsigned char	*st2;
+	size_t			ct;
 
-/* it is free but it returns 0  */
+	st1 = (unsigned char*)s1;
+	st2 = (unsigned char*)s2;
+	ct = 0;
+	while (ct < n)
+	{
+		if (*st1 != *st2)
+			return (*(unsigned char*)st1 - *(unsigned char*)st2);
+		st1++;
+		st2++;
+		ct++;
+	}
+	return (0);
+}

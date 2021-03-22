@@ -1,21 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/10/31 18:54:24 by megen             #+#    #+#             */
+/*   Updated: 2020/10/31 18:54:26 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	free(line);
-	return(0);
-}
+	size_t		ct;
+	const char	*cstsrc = src;
+	char		*cstdst;
 
-/* it is free but it returns 0  */
+	if (dst == src)
+		return (dst);
+	cstdst = dst;
+	ct = 0;
+	if (src < dst)
+	{
+		while (len > 0)
+		{
+			len--;
+			cstdst[len] = cstsrc[len];
+		}
+	}
+	else
+	{
+		while (ct < len)
+		{
+			cstdst[ct] = cstsrc[ct];
+			ct++;
+		}
+	}
+	return (dst);
+}

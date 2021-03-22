@@ -1,7 +1,7 @@
 
-HEADER = *.h
+HEADER = cub3d.h
 
-NAME = cub.a
+NAME = a.out
 
 CC = gcc
 
@@ -9,23 +9,34 @@ RM = rm -rf
 
 CFLAGS = -Wall -Wextra -Werror -g
 
-OFLAGS = -c -I $(HEADER)
+OFLAGS = -I $(HEADER)
 
-SRCS = *.c
+SRCS =	main.c\
+		settings_base.c\
+		settings_color.c\
+		settings_resolution.c\
+		settings_textures.c\
+		settings_utils.c\
+		func_head.c\
+		get_next_line.c\
 
 OBJS = $(SRCS:.c=.o)
 
-$(NAME):
+$(NAME): libft
 	$(CC) $(CFLAGS) $(OFLAGS) $(SRCS)
-	ar rc $(NAME) $(OBJS)
 
-all: $(NAME)
+all: libft $(NAME)
+
+libft:
+	make -C ary_libft/
 
 clean:
 	$(RM) $(OBJS)
+	make -C ary_libft/ clean
 
 fclean: clean
 	$(RM) $(NAME)
+	make -C ary_libft/ fclean
 
 re: fclean all
 

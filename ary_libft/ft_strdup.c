@@ -1,21 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/11/13 19:13:50 by megen             #+#    #+#             */
+/*   Updated: 2020/11/13 19:13:52 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+char			*ft_strdup(const char *s1)
 {
-	free(line);
-	return(0);
-}
+	int		lenchar;
+	char	*malchar;
 
-/* it is free but it returns 0  */
+	lenchar = ft_strlen(s1);
+	malchar = (char *)malloc(sizeof(char) * lenchar + 1);
+	if (malchar == (void *)0)
+		return (malchar);
+	while (lenchar >= 0)
+	{
+		malchar[lenchar] = s1[lenchar];
+		--lenchar;
+	}
+	return (malchar);
+}

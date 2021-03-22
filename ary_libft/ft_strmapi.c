@@ -1,21 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/11/26 16:34:41 by megen             #+#    #+#             */
+/*   Updated: 2020/11/26 16:34:42 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	free(line);
-	return(0);
-}
+	char			*ret;
+	unsigned int	len;
+	unsigned int	ct;
 
-/* it is free but it returns 0  */
+	if (!s || !f)
+		return ((void *)0);
+	len = ft_strlen(s);
+	ret = (char *)ft_calloc(len + 1, sizeof(char));
+	if (!ret)
+		return ((void *)0);
+	ct = 0;
+	while (ct < len)
+	{
+		ret[ct] = f(ct, s[ct]);
+		ct++;
+	}
+	return (ret);
+}

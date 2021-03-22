@@ -6,13 +6,13 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 18:42:48 by megen             #+#    #+#             */
-/*   Updated: 2021/03/18 21:35:12 by megen            ###   ########.fr       */
+/*   Updated: 2021/03/22 17:05:52 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// static char			**map_proc(char *path , t_set *set)
+// int map_proc(char *path , t_set *set)
 // {
 // 	char **map;
 // 	int fd;
@@ -20,14 +20,15 @@
 
 // 	len = ft_strlen(path);
 // 	if (path[len] != 'b' && path[len - 1] != 'u' && path[len - 2] != 'c' && path[len - 3] != '.')
-// 		return(NULL);
+// 		return(1);
 // 	if ((fd = open(path, O_RDONLY)) < 0)
-// 		return(NULL);
+// 		return(1);
 // 	if (get_settings(fd, set))
-// 		return(NULL);
-// //	map = get_map(fd);
+// 		return(!(close(fd)));
+// 	// if (get_map(set, fd))
+// 	// 	return(!(close(fd)));
 // 	close(fd);
-// 	return(map);
+// 	return(0);
 // }
 
 // int main(int argc, char *argv[])
@@ -37,9 +38,9 @@ int main()
 	t_set	set;
 	int		fd;
 
-	fd = open("./map.cub", O_RDONLY);
+	fd = open("/Users/megen/wrekspace/ary_cub3d/map.cub", O_RDONLY);
 	printf("%d\n", fd);
-	if (get_settings(fd, &set))
+	if (get_settings(&set, fd))
 		printf("wrong\n");
 	else
 		printf("good\n");

@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/10/31 12:59:48 by megen             #+#    #+#             */
+/*   Updated: 2020/10/31 17:38:51 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	free(line);
-	return(0);
-}
+	unsigned char *str;
 
-/* it is free but it returns 0  */
+	str = b;
+	while (len)
+	{
+		*str = (unsigned char)c;
+		len--;
+		str++;
+	}
+	return (b);
+}

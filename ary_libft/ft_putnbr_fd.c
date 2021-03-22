@@ -1,21 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/11/26 17:06:23 by megen             #+#    #+#             */
+/*   Updated: 2020/11/26 17:06:25 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+void	ft_putnbr_fd(int n, int fd)
 {
-	free(line);
-	return(0);
-}
+	long	int	b;
 
-/* it is free but it returns 0  */
+	b = 0;
+	if (n < 0)
+	{
+		write(fd, "-", 1);
+		n = (n + 1) * -1;
+		b = n;
+		b++;
+	}
+	else if (n >= 0)
+		b = n;
+	if ((b / 10) > 0)
+		ft_putnbr_fd(b / 10, fd);
+	n = (b % 10 + '0');
+	write(fd, &n, 1);
+}

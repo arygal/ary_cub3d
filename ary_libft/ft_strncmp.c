@@ -1,21 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/11/13 14:27:58 by megen             #+#    #+#             */
+/*   Updated: 2020/11/13 14:28:00 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	free(line);
-	return(0);
-}
+	size_t ct;
 
-/* it is free but it returns 0  */
+	ct = 0;
+	if (n == 0)
+		return (0);
+	while (*s1 && (*s1 == *s2) && ct < n - 1)
+	{
+		s1++;
+		s2++;
+		ct++;
+	}
+	return (*(unsigned char*)s1 - *(unsigned char*)s2);
+}

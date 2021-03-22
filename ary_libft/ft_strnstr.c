@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/11/04 18:04:21 by megen             #+#    #+#             */
+/*   Updated: 2020/11/04 18:04:23 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+char			*ft_strnstr(const char *haystack, const char *needle,
+				size_t len)
 {
-	free(line);
-	return(0);
-}
+	size_t	szn;
 
-/* it is free but it returns 0  */
+	if (!*needle)
+		return ((char *)haystack);
+	szn = ft_strlen(needle);
+	while (*haystack && len >= szn)
+	{
+		len--;
+		if (ft_strncmp(haystack, needle, szn) == 0)
+			return ((char *)haystack);
+		haystack++;
+	}
+	return ((void *)0);
+}

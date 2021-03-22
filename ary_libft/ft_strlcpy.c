@@ -1,21 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/11/01 18:17:21 by megen             #+#    #+#             */
+/*   Updated: 2020/11/01 18:17:26 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	free(line);
-	return(0);
-}
+	size_t ct;
 
-/* it is free but it returns 0  */
+	ct = 0;
+	if (dst == (void *)0)
+		return (0);
+	if (dstsize == 0)
+		return (ft_strlen(src));
+	while (src[ct] != '\0' && ct < dstsize - 1)
+	{
+		dst[ct] = src[ct];
+		ct++;
+	}
+	if (ct < dstsize)
+		dst[ct] = '\0';
+	while (src[ct] != '\0')
+		ct++;
+	return (ct);
+}

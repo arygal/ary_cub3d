@@ -1,21 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/11/04 17:58:58 by megen             #+#    #+#             */
+/*   Updated: 2020/11/04 17:59:00 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+char			*ft_strrchr(const char *s, int c)
 {
-	free(line);
-	return(0);
-}
+	int		ct;
+	char	*cts;
 
-/* it is free but it returns 0  */
+	cts = (char *)s;
+	ct = 0;
+	if (c == '\0')
+		return (cts + ft_strlen(s));
+	while (*s)
+	{
+		if (*s == c)
+			ct++;
+		s++;
+	}
+	if (ct == 0)
+		return ((void *)0);
+	while (*cts)
+	{
+		if (*cts == c)
+			ct--;
+		if (ct == 0)
+			return (cts);
+		cts++;
+	}
+	return ((void *)0);
+}

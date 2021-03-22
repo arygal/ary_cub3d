@@ -1,10 +1,11 @@
-R 100 720
+R 1        720     
 
-SO ./minilibx/font.c
-NO ./minilibx/font.c
-EA ./minilibx/font.c
-WE ./minilibx/font.c
-S ./minilibx/font.c
+NO /Users/megen/wrekspace/ary_cub3d/t.txt
+SO /Users/megen/wrekspace/ary_cub3d/t.txt
+WE /Users/megen/wrekspace/ary_cub3d/t.txt
+EA  /Users/megen/wrekspace/ary_cub3d/map.cub    
+S /Users/megen/wrekspace/ary_cub3d/t.txt
 
-C 255,200,160
-F 122,122,122
+F       222,200,160   
+C         122,122,122 
+

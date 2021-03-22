@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/21 17:05:13 by megen            ###   ########.fr       */
+/*   Created: 2020/11/13 18:38:00 by megen             #+#    #+#             */
+/*   Updated: 2020/11/13 18:38:02 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-int		i_free(char *line)
+void			*ft_calloc(size_t count, size_t size)
 {
-	free(line);
-	return(0);
-}
+	unsigned long long	sum;
+	void				*ptr;
 
-/* it is free but it returns 0  */
+	sum = count * size;
+	ptr = (void *)malloc(sum);
+	if (ptr)
+		ft_memset(ptr, '\0', sum);
+	return (ptr);
+}
