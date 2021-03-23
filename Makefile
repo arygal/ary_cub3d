@@ -1,7 +1,9 @@
 
 HEADER = cub3d.h
 
-NAME = a.out
+NAME = cub3d
+
+LIBFT = ./ary_libft
 
 CC = gcc
 
@@ -9,7 +11,8 @@ RM = rm -rf
 
 CFLAGS = -Wall -Wextra -Werror -g
 
-OFLAGS = -I $(HEADER)
+OFLAGS =	-I $(HEADER) \
+			-L $(LIBFT) -lft
 
 SRCS =	main.c\
 		settings_base.c\
@@ -19,6 +22,8 @@ SRCS =	main.c\
 		settings_utils.c\
 		func_head.c\
 		get_next_line.c\
+		map_proc.c\
+		map_utils.c\
 
 OBJS = $(SRCS:.c=.o)
 
@@ -28,15 +33,15 @@ $(NAME): libft
 all: libft $(NAME)
 
 libft:
-	make -C ary_libft/
+	make -C $(LIBFT)
 
 clean:
 	$(RM) $(OBJS)
-	make -C ary_libft/ clean
+	make -C $(LIBFT) clean
 
 fclean: clean
 	$(RM) $(NAME)
-	make -C ary_libft/ fclean
+	make -C $(LIBFT) fclean
 
 re: fclean all
 

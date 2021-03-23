@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 17:21:12 by megen             #+#    #+#             */
-/*   Updated: 2021/03/22 17:20:06 by megen            ###   ########.fr       */
+/*   Updated: 2021/03/23 17:28:47 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static bool get_settings_chek(t_set *set)
 {
 	if(set->ceiling.b == -1 || set->floor.b == -1 || set->height == -1)
 		return(false);
-	if(set->textures.len < 5)
+	if(set->textures.len != 5)
 		return(false);
 	return(true);
 }
@@ -52,10 +52,11 @@ static bool get_settings_hub (t_set *set, int fd)
 			if (get_next_line(fd, &line) <= 0)
 				return(false);
 		}
-	if (!(split  = ft_split(line , ' ')))
+	split = ft_split(line , ' ');
+	if (*split == NULL)
 		return(i_free(line));
 	free(line);
-	if (split[0][0] == 'R' && split[0][1] == '\0' && set->height == -1 && split[3] == NULL)
+	if (split[0][0] == 'R' && split[0][1] == '\0' && set->height == -1 && split[2] != NULL)
 		return (get_res(set, split));
 	if (split[0][0] == 'C' && split[0][1] == '\0' && set->ceiling.b == -1 && split[2] == NULL)
 		return (get_color(set, split, 'C'));
@@ -63,7 +64,7 @@ static bool get_settings_hub (t_set *set, int fd)
 		return (get_color(set, split, 'F'));
 	if(!(get_textures(set, split)))
 		return(split_free(split));
-	return(split_free(split));
+	return(!(split_free(split)));
 }
 
 bool get_settings(t_set *set, int fd)

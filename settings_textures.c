@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 19:27:53 by megen             #+#    #+#             */
-/*   Updated: 2021/03/22 17:18:39 by megen            ###   ########.fr       */
+/*   Updated: 2021/03/22 20:15:47 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static void			free_textures_node(t_set *set)
 
 	temp = set->textures.head;
 	set->textures.head = set->textures.head->next;
+	--set->textures.len;
 	free(temp->path);
 	free(temp->name);
 	free(temp);
@@ -37,11 +38,11 @@ static void			free_textures_node(t_set *set)
 
 /* kills one from the head */
 
-bool			free_textures_list(t_set *set)
+int			free_textures_list(t_set *set)
 {
 	while (set->textures.head != NULL)
 		free_textures_node(set);
-	return(true);
+	return(0);
 }
 
 /* kills list */
@@ -53,14 +54,17 @@ static	bool		add_to_textures_list( t_set *set, char *name, char *path)
 
 	if (set->textures.head != NULL)
 		if (!(texture_list_name_check(set , name)))
-			return(false);
+		{
+			free(path);
+			return(i_free(name));
+		}
 	if (!(make_textures_node(&temp, path, name)))
 		{
 			free(path);
 			return(i_free(name));
 		}
 	++set->textures.len;
-	if (set->textures.head == NULL && set->textures.tail == NULL)
+	if (set->textures.head == NULL)
 		{
 			set->textures.head = temp;
 			set->textures.tail = temp;
@@ -85,7 +89,7 @@ bool			get_textures(t_set *set,char **split)
 	close(fd);
 	if (!(name = ft_strdup(split[0])))
 		return(false);
-	if (!(path = ft_strdup(split[0])))
+	if (!(path = ft_strdup(split[1])))
 		return(i_free(path));
 	if (!(add_to_textures_list(set, name, path)))
 		return(false);

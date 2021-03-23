@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 20:36:38 by megen             #+#    #+#             */
-/*   Updated: 2021/03/22 17:16:43 by megen            ###   ########.fr       */
+/*   Updated: 2021/03/23 17:23:45 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,29 +74,34 @@ typedef struct			s_set
 	char				**map;
 }						t_set;
 
-// typedef struct 			s_map_node
-// {
-// 	int					place;
-// 	char				*line;
-// 	t_map_node			*next;
-// }						t_map_node;
+typedef struct			s_map_node
+{
+	char *line;
+	struct s_map_node	*next;
+}						t_map_node;
 
-// typedef struct			s_map_list
-// {
-// 	int					len;
-// 	t_map_node			*head;
-// 	t_map_node			*tail;
-// }						t_map_list;
+
+typedef struct			s_map_list
+{
+	int					len;
+	t_map_node			*head;
+	t_map_node			*tail;
+}						t_map_list;
 
 int						clear_atoui(char *line);
 bool					ft_strcmp(char *line1, char *line2);
 bool					texture_list_name_check(t_set *set, char *name);
+bool					make_map_line(t_map_node **node , char *line);
+bool					map_line_check(t_set *set,char *line);
+bool					map_chek(char **map, int spawn);
+bool 					get_map(t_set *set,int fd);
 int						get_next_line(int fd, char **line);
 bool 					get_settings(t_set *set, int fd);
 bool 					get_res(t_set *set, char **split);
 bool 					get_color(t_set *set,char **split, int def);
 bool					get_textures(t_set *set,char **split);
-bool					free_textures_list(t_set *set);
+int						free_textures_list(t_set *set);
+int 					free_map_list(t_map_list *map);
 int						i_free(char *line);
 int						split_free(char **ret);
 int						free_set(t_set *set);
