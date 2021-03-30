@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 18:30:55 by megen             #+#    #+#             */
-/*   Updated: 2021/03/22 18:28:02 by megen            ###   ########.fr       */
+/*   Updated: 2021/03/29 16:51:33 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ bool get_color(t_set *set,char **split, int def)
 	|| temp.r < 0) || (temp.g > 255 || temp.g < 0))
 		return(false);
 	if (def == 'F')
-		set->floor = temp;
+		set->floor = trgb(0 , temp.r, temp.g, temp.b);
 	else
-		set->ceiling = temp;
+		set->ceiling = trgb(0 , temp.r, temp.g, temp.b);
 	return(true);	
 }

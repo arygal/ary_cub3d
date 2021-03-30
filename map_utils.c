@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 16:30:03 by megen             #+#    #+#             */
-/*   Updated: 2021/03/23 17:49:23 by megen            ###   ########.fr       */
+/*   Updated: 2021/03/30 20:26:19 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,33 +65,33 @@ static bool map_chek_add(char **map)
 	return(true);
 }
 
-bool map_chek(char **map, int spawn)
+bool map_chek(t_set *set , int x, int y)
 {
-	int x;
-	int y;
 	int len1;
 	int len2;
 
-	y = 1;
-	while(map[y + 1] != NULL)
+	while(set->map[++y + 1] != NULL)
 	{
-		x = 1;
-		while(map[y][x + 1] != '\0')
+		len1 = ft_strlen(set->map[y - 1]);
+		len2 = ft_strlen(set->map[y + 1]);
+		while(set->map[y][++x + 1] != '\0')
 		{
-			if (map[y][x] == '2' || map[y][x] == '0' || map[y][x] == spawn)
+			if (set->map[y][x] == '2' || set->map[y][x] == '0' || set->map[y][x] == set->spawn)
 				{
-					len1 = ft_strlen(map[y - 1]);
-					len2 = ft_strlen(map[y + 1]);
-					if ((x >= len1 || map[y + 1][x] == ' ') 
-					|| (x >= len2 || map[y - 1][x] == ' ') 
-					|| (map[y][x + 1] == ' ') || (map[y][x - 1] == ' '))
+					if ((x >= len1 || set->map[y + 1][x] == ' ') 
+					|| (x >= len2 || set->map[y - 1][x] == ' ') 
+					|| (set->map[y][x + 1] == ' ') || (set->map[y][x - 1] == ' '))
 						return(false);
+					if(set->map[y][x] == set->spawn)
+					{
+							set->spawn_x = x;
+							set->spawn_y = y;
+					}
 				}
-			++x;
 		}
-		++y;
+		x = 0;
 	}
-	return(map_chek_add(map));
+	return(map_chek_add(set->map));
 }
 
 bool		map_line_check(t_set *set,char *line)

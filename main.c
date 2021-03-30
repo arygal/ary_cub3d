@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 18:42:48 by megen             #+#    #+#             */
-/*   Updated: 2021/03/23 17:53:44 by megen            ###   ########.fr       */
+/*   Updated: 2021/03/29 20:35:34 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,17 @@ bool map_proc(t_set *set, char *path)
 	return(true);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
-
-	t_set	set;
+	t_all	all;
 
 	if (argc != 2)
 		return(printf("Error\n %s\n", "Use map path as argument"));
-	if (!(map_proc(&set, argv[1])))
+	if (!(map_proc(&all.set, argv[1])))
 		return(printf("Error\n %s\n", "Map file error"));
-	printf("good");
+	printf("good\n");
+	game(&all);
 	return(0);
 }
+
+// bool cub_start(t_set *set);

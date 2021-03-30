@@ -5,6 +5,8 @@ NAME = cub3d
 
 LIBFT = ./ary_libft
 
+MLX = ./mlx
+
 CC = gcc
 
 RM = rm -rf
@@ -12,7 +14,8 @@ RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror -g
 
 OFLAGS =	-I $(HEADER) \
-			-L $(LIBFT) -lft
+			-L $(LIBFT) -lft \
+			-L $(MLX) -lmlx -framework OpenGL -framework AppKit
 
 SRCS =	main.c\
 		settings_base.c\
@@ -24,10 +27,11 @@ SRCS =	main.c\
 		get_next_line.c\
 		map_proc.c\
 		map_utils.c\
+		cub3d_base.c\
 
 OBJS = $(SRCS:.c=.o)
 
-$(NAME): libft
+$(NAME): libft mlx
 	$(CC) $(CFLAGS) $(OFLAGS) $(SRCS)
 
 all: libft $(NAME)
@@ -35,13 +39,18 @@ all: libft $(NAME)
 libft:
 	make -C $(LIBFT)
 
+mlx:
+	make -C $(MLX)
+
 clean:
 	$(RM) $(OBJS)
 	make -C $(LIBFT) clean
+	make -C $(MLX) clean
 
 fclean: clean
 	$(RM) $(NAME)
 	make -C $(LIBFT) fclean
+	make -C $(MLX) clean
 
 re: fclean all
 

@@ -6,17 +6,27 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 19:27:53 by megen             #+#    #+#             */
-/*   Updated: 2021/03/22 20:15:47 by megen            ###   ########.fr       */
+/*   Updated: 2021/03/29 20:32:46 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static bool	make_textures_node(t_texture **node , char *path , char *name)
+static bool	make_textures_node(void *mlx ,t_texture **node , char *path , char *name)
 {
 	if (!(*node = malloc(sizeof(t_texture))))
 		return(false);
-	(*node)->path = path;
+	
+	(*node)->img = mlx_xpm_file_to_image(mlx, path, &(*node)->w, &(*node)->h);
+	if ((*node)->img == NULL)
+		return(i_free(*node));
+	(*node)->adr = mlx_get_data_addr((*node)->img, &(*node)->bpp, &(*node)->len, &(*node)->end);
+	if ((*node)->adr == NULL)
+	{
+		mlx_destroy_image(mlx,(*node)->img);
+		return(i_free(*node));
+	}
+	free(path);
 	(*node)->name = name;
 	(*node)->next = NULL;
 	return(true);
@@ -31,7 +41,7 @@ static void			free_textures_node(t_set *set)
 	temp = set->textures.head;
 	set->textures.head = set->textures.head->next;
 	--set->textures.len;
-	free(temp->path);
+	mlx_destroy_image(set->textures.mlx, temp->img);
 	free(temp->name);
 	free(temp);
 }
@@ -58,7 +68,7 @@ static	bool		add_to_textures_list( t_set *set, char *name, char *path)
 			free(path);
 			return(i_free(name));
 		}
-	if (!(make_textures_node(&temp, path, name)))
+	if (!(make_textures_node(set->textures.mlx ,&temp, path, name)))
 		{
 			free(path);
 			return(i_free(name));
@@ -78,20 +88,20 @@ static	bool		add_to_textures_list( t_set *set, char *name, char *path)
 bool			get_textures(t_set *set,char **split)
 {
 	int fd;
-	char *name;
-	char *path;
+	int len;
 	
 	if (split[2] != NULL)
-		return(false);
+		return(split_free(split));
+	len = ft_strlen(split[1]);
+	if (len < 5 || (!(i_strcmp(split[1] + len - 4, ".xpm")) 
+			&& !(i_strcmp(split[1] + len - 4, ".png"))))
+		return (split_free(split));
 	fd = open (split[1] , O_RDONLY);
 	if (fd < 3)
-		return(false);
+		return(split_free(split));
 	close(fd);
-	if (!(name = ft_strdup(split[0])))
-		return(false);
-	if (!(path = ft_strdup(split[1])))
-		return(i_free(path));
-	if (!(add_to_textures_list(set, name, path)))
+	free(split);
+	if (!(add_to_textures_list(set, split[0], split[1])))
 		return(false);
 	return(true);
 }

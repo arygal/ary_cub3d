@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 21:33:55 by megen             #+#    #+#             */
-/*   Updated: 2021/03/23 17:39:05 by megen            ###   ########.fr       */
+/*   Updated: 2021/03/26 19:47:08 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,5 @@ bool get_map(t_set *set,int fd)
 		return(free_map_list(&map));
 	if (!(map_assemley(set, &map)))
 		return(free_map_list(&map));
-	return(map_chek(set->map , set->spawn));
+	return(map_chek(set, 0 , 0));
 }
