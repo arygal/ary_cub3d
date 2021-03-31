@@ -5,7 +5,7 @@ C         137,155,152
 R   800                        600     
 
 NO /Users/megen/wrekspace/ary_cub3d/textures/metal.xpm
-                            SO              /Users/megen/wrekspace/ary_cub3d/textures/grass.xpm
+  SO              /Users/megen/wrekspace/ary_cub3d/textures/grass.xpm
    EA  /Users/megen/wrekspace/ary_cub3d/textures/brick.xpm 
 
 F       137,155,30   

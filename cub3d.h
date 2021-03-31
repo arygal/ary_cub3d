@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 20:36:38 by megen             #+#    #+#             */
-/*   Updated: 2021/03/30 19:46:19 by megen            ###   ########.fr       */
+/*   Updated: 2021/03/31 20:50:04 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <math.h>
 
 # ifndef move
-#  define move 0.10
+#  define move 0.30
 # endif
 
 # ifndef turn
@@ -189,6 +189,7 @@ int						clear_atoui(char *line);
 int						i_strcmp(char *line1, char *line2);
 int						i_free(void *line);
 int						split_free(char **ret);
+int 					arr_len(char **arr);
 
 /* map parser */
 

@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/29 20:30:47 by megen            ###   ########.fr       */
+/*   Updated: 2021/03/31 18:14:42 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,3 +67,13 @@ int clear_atoui(char *line)
 }
 
 /* atoi onli for positive int and if it found not num char - it return -1 */
+
+int arr_len(char **arr)
+{
+	int	ct;
+	
+	ct = 0;
+	while (arr[ct] != NULL)
+		++ct;
+	return(ct);
+}

@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 17:21:12 by megen             #+#    #+#             */
-/*   Updated: 2021/03/29 20:33:24 by megen            ###   ########.fr       */
+/*   Updated: 2021/03/31 20:05:09 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ static bool		index_textures(t_set *set)
 
 	if (!(set->textures.index = malloc(sizeof(t_texture *) * set->textures.len)))
 		return(false);
-	temp = texture_find(set, "NO");
-	set->textures.index[0] = temp;
-	temp = texture_find(set, "SO");
-	set->textures.index[1] = temp;
-	temp = texture_find(set, "WE");
-	set->textures.index[2] = temp;
 	temp = texture_find(set, "EA");
+	set->textures.index[0] = temp;
+	temp = texture_find(set, "WE");
+	set->textures.index[1] = temp;
+	temp = texture_find(set, "SO");
+	set->textures.index[2] = temp;
+	temp = texture_find(set, "NO");
 	set->textures.index[3] = temp;
 	temp = texture_find(set, "S");
 	set->textures.index[4] = temp;
