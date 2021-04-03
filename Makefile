@@ -28,6 +28,7 @@ SRCS =	main.c\
 		map_proc.c\
 		map_utils.c\
 		cub3d_base.c\
+		cub3d_sprite.c\
 
 OBJS = $(SRCS:.c=.o)
 

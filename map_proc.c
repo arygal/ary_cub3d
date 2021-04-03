@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 21:33:55 by megen             #+#    #+#             */
-/*   Updated: 2021/03/26 19:47:08 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/01 19:24:44 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static bool add_to_map_list(t_map_list *map,char *line)
 	return(true);
 }
 
-static bool map_proc(t_set *set,t_map_list *map, char *first, int fd)
+static bool map_proc(t_set *set, t_map_list *map, char *first, int fd)
 {
 	char *line;
 	int ret;
@@ -62,10 +62,12 @@ static bool map_proc(t_set *set,t_map_list *map, char *first, int fd)
 	map->len = 0;
 	map->head = NULL;
 	line = first;
+	set->sprites = 0;
 	while (true)
 	{
-		if(!(map_line_check(set, line)))
-			return(i_free(line));
+		if (*line != '\0')
+			if(!(map_line_check(set, line)))
+				return(i_free(line));
 		if(!(add_to_map_list(map, line)))
 			return(false);
 		if (ret < 1)

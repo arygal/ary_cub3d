@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 16:30:03 by megen             #+#    #+#             */
-/*   Updated: 2021/03/30 20:26:19 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/01 19:23:16 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,12 @@ bool map_chek(t_set *set , int x, int y)
 
 bool		map_line_check(t_set *set,char *line)
 {
-	if(*line == '\0')
-		return(true);
 	if (*line != '1' && *line != ' ')
 		return(false);
 	while (*line)
 	{
+		if (*line == '2')
+			++set->sprites;
 		if (*line == 'N' || *line == 'W' || *line == 'S' || *line == 'E')
 			{
 				if (set->spawn == 0)

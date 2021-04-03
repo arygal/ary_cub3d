@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 20:36:38 by megen             #+#    #+#             */
-/*   Updated: 2021/03/31 20:50:04 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/03 19:34:05 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 # include <math.h>
 
 # ifndef move
-#  define move 0.30
+#  define move 0.10
 # endif
 
 # ifndef turn
-#  define turn 0.10
+#  define turn 0.05
 # endif
 
 
@@ -93,6 +93,7 @@ typedef struct			s_set
 	t_texture_list		textures;
 	int					floor;
 	int					ceiling;
+	int					sprites;
 	int					spawn;
 	int					spawn_x;
 	int					spawn_y;
@@ -142,17 +143,47 @@ typedef struct			s_mlx
 	void				*win;
 }						t_mlx;
 
+typedef struct s_sprite
+{
+	struct s_sprite	*next;
+	int				x;
+	int				y;
+	int				used;
+}				t_sprite;
+
+
+typedef struct s_sprites
+{
+	double				*buf;
+	t_sprite			*head;
+	t_sprite			*tail;
+	int					used;
+}				t_sprites;
+
+
+typedef struct s_keys
+{
+	bool up;
+	bool down;
+	bool rot_left;
+	bool rot_right;
+}				t_keys;
+
+
 typedef struct			s_all
 {
 	t_set				set;
 	t_mlx				lib;
 	t_p					plr;
 	t_img				img;
+	t_sprites			spr;
+	t_keys				key;
 }						t_all;
 
 
 typedef struct			s_ray
 {
+	double	*buff;
 	double	tex_p;
 	double	tex_s;
 	double	cam_x;
@@ -178,8 +209,27 @@ typedef struct			s_ray
 	int		hit;
 	int		side;
 	int		line;
-	
 }						t_ray;
+
+typedef	struct			s_spr
+{
+	double				inv_d;
+	double				tr_x;
+	double				tr_y;
+	double				spr_x;
+	double				spr_y;
+	int					spr_h;
+	int					spr_w;
+	int					drw_sx;
+	int					drw_ex;
+	int					drw_sy;
+	int					drw_ey;
+	int					tex_x;
+	int					tex_y;
+	int					line;
+	int					scr_x;
+}						t_spr;
+
 
 
 
@@ -212,4 +262,7 @@ t_texture				*texture_find(t_set *set, char *name);
 /*----------------------game--------------------------------------------------*/
 
 bool					game(t_all *all);
+void 					draw_sprites_head(t_all *all);
+int						mlx_get_pixel_color(t_texture *img, int width,int height);
+void					mlx_draw_pixel(t_img *img, int width,int height, int argb);
 #endif

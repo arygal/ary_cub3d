@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 18:14:00 by megen             #+#    #+#             */
-/*   Updated: 2021/03/31 21:03:55 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/03 19:30:44 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void textures_draw(t_all *all, t_ray *ray, t_texture *img);
 void walls(t_all *all, t_ray *ray);
 void dda(t_ray *ray);
 void step_prep(t_ray *ray);
+void sprite_base(t_all *all, t_ray *ray);
 
 void mlx_draw_pixel(t_img *img, int width,int height, int argb)
 {
@@ -39,6 +40,57 @@ int mlx_get_pixel_color(t_texture *img, int width,int height)
 	dest = img->adr + (height * img->len + width * (img->bpp / 8));
 	argb = *(unsigned int*)dest;
 	return(argb);
+}
+
+int free_sprites_list(t_sprites *list)
+{
+	t_sprite *temp;
+
+	if (list->head == NULL)
+		return(0);
+	while(list->head)
+	{
+		temp = list->head;
+		list->head = list->head->next;
+		free(temp);
+	}
+	return(0);
+}
+
+t_sprite *sprite_node()
+{
+	t_sprite *node;
+
+	if (!(node = malloc(sizeof(t_sprite))))
+		return(NULL);
+	node->used = 0;
+	node->next = NULL;
+	return(node);
+}
+
+bool srites_init(t_sprites *list, int size)
+{
+	t_sprite *node;
+	int ct;
+
+	ct = -1;
+	list->used = 0;
+	list->head = NULL;
+	while (++ct != size)
+	{
+		node = sprite_node();
+		if (node == NULL)
+			return(free_sprites_list(list));
+		if (list->head == NULL)
+			{
+				list->head = node;
+				list->tail = node;
+				continue;
+			}
+		list->tail->next = node;
+		list->tail = node;
+	}
+	return(true);
 }
 
 void draw_canwas(t_all *all)
@@ -61,10 +113,11 @@ void draw_canwas(t_all *all)
 	}
 }
 
-int exit_game_alt(t_set *set)
+int exit_game_alt(t_all *all)
 {
-	free_set(set);
-	exit(1);
+	free_sprites_list(&all->spr);
+	free_set(&all->set);
+	exit(0);
 }
 
 void move_forward(t_p	*plr, char **map)
@@ -113,24 +166,53 @@ void rotate_left(t_p *plr)
 	plr->plane_y = plane_x * sin(-turn) + plr->plane_y * cos(-turn);
 }
 
-int controls(int key, t_all *all)
+void controls(t_all *all)
 {
-	// printf("%d\n", key);
-	if (key == 53)
+	if (all->key.up)
+		move_forward(&all->plr, all->set.map);
+	if (all->key.rot_left)
+		rotate_left(&all->plr);
+	if (all->key.down)
+		move_back(&all->plr, all->set.map);
+	if (all->key.rot_right)
+		rotate_right(&all->plr);
+ }
+
+int controls_press(int key, t_all *all)
+{
+		if (key == 53)
 	{	
 		mlx_destroy_window(all->lib.mlx, all->lib.win);
-		exit_game_alt(&all->set);
+		exit_game_alt(all);
 	}
 	if (key == 13)
-		move_forward(&all->plr, all->set.map);
+		all->key.up = true;
+		// move_forward(&all->plr, all->set.map);
 	if (key == 0)
-		rotate_left(&all->plr);
+		all->key.rot_left = true;
+		// rotate_left(&all->plr);
 	if (key == 1)
-		move_back(&all->plr, all->set.map);
+		all->key.down = true;
+		// move_back(&all->plr, all->set.map);
 	if (key == 2)
-		rotate_right(&all->plr);
+		all->key.rot_right = true;
+		// rotate_right(&all->plr);
 	return(0);
- }
+}
+
+int controls_release(int key, t_all *all)
+{
+	if (key == 13)
+		all->key.up = false;
+	if (key == 0)
+		all->key.rot_left = false;
+	if (key == 1)
+		all->key.down = false;
+	if (key == 2)
+		all->key.rot_right = false;
+	return(0);
+}
+
 void player_init_add(t_p *plr)
 {
 	plr->dir_y = 0.0;
@@ -169,6 +251,10 @@ void player_init(t_p *plr, int spawn)
 // TODO : ERROR HANDLING!
 bool		game(t_all *all)
 {	
+	 if(!(all->spr.buf = malloc(sizeof(double) * all->set.width)))
+	 	return(false);
+	if (!(srites_init(&all->spr, all->set.sprites)))
+		return(false);
 	all->lib.mlx = all->set.textures.mlx;
 	if (!(all->lib.win = mlx_new_window(all->lib.mlx, all->set.width, all->set.height, "cub3d")))
 		return(false);
@@ -181,6 +267,10 @@ bool		game(t_all *all)
 	all->plr.pos_x = (double)all->set.spawn_x + 0.5;
 	all->plr.pos_y = (double)all->set.spawn_y + 0.5;
 	player_init(&all->plr, all->set.spawn);
+	all->key.down = false;
+	all->key.up = false;
+	all->key.rot_left = false;
+	all->key.rot_right = false;
 	// all->plr.pos_y = 2.460075;
 	// all->plr.pos_x = 8.906560;
 	// all->plr.plane_x = 0;
@@ -189,8 +279,9 @@ bool		game(t_all *all)
 	// all->plr.dir_y = (all->set.spawn =='S') + ((all->set.spawn == 'N') * -1);
 	// all->plr.dir_x = 1;
 	// all->plr.dir_y = 0;
-	mlx_hook(all->lib.win, 2 , 1L<<0, controls, all);
-	mlx_hook(all->lib.win, 17 , 0L ,exit_game_alt, &all->set);
+	mlx_hook(all->lib.win, 2 , 1L<<0, controls_press, all);
+	mlx_hook(all->lib.win, 3 , 1L<<1, controls_release, all);
+	mlx_hook(all->lib.win, 17 , 0L, exit_game_alt, all);
 	mlx_loop_hook(all->lib.mlx , ray_start, all);
 	mlx_loop(all->lib.mlx);
 	return(0);
@@ -202,32 +293,24 @@ int	ray_start(t_all *all)
 	double		y;
 	double		x;
 
-	//  all->plr.pos_x = 0.005;
-	// all->plr.pos_y += 0.5;
+	ray.buff = all->spr.buf;
 	y = (double)arr_len(all->set.map);
 	if (all->plr.pos_y > 1.0 && all->plr.pos_y < y)
 		x = ft_strlen(all->set.map[(int)all->plr.pos_y]);
 	else
 		x = 0.0;
 	ray.line = -1;
-	// printf("X:%f\n", all->plr.pos_x);
-	// printf("Y:%f\n", all->plr.pos_y);
-	// 	printf("DirX:%f\n", all->plr.dir_x);
-	// printf("DirY:%f\n", all->plr.dir_y);
-	// 	printf("PlaneX:%f\n", all->plr.plane_x);
-	// printf("PlaneY:%f\n", all->plr.plane_y);
-
 	if (all->plr.pos_y > 1.0 && all->plr.pos_y < y - 1 && all->plr.pos_x > 1.0 && all->plr.pos_x < x - 1)
-	{
 		if((all->set.map[(int)all->plr.pos_y][(int)all->plr.pos_x] != ' ') && (all->set.map[(int)all->plr.pos_y][(int)all->plr.pos_x] != '1'))
+		{
 			while (++ray.line < all->set.width)
-			ray_cast(all, &ray);
-		else
-			draw_canwas(all);
-	}
-	else
+					ray_cast(all, &ray);
+			draw_sprites_head(all);
+		}
+	if (ray.line == -1)		
 		draw_canwas(all);
 	mlx_put_image_to_window(all->lib.mlx, all->lib.win, all->img.img, 0, 0);
+	controls(all);
 	return(1);
 }
 void inits(t_all *all, t_ray *ray)
@@ -296,12 +379,13 @@ void walls(t_all *all, t_ray *ray)
 		ray->wall_d = ((1 - ray->step_x) / 2 + ray->map_x - ray->pos_x) / ray->dir_x;
 	else
 		ray->wall_d = ((1 - ray->step_y) / 2 + ray->map_y - ray->pos_y) / ray->dir_y;
+	ray->buff[ray->line] = ray->wall_d;
 	ray->wall_h = (int)(all->set.height / ray->wall_d);
 	ray->wall_s = -ray->wall_h / 2 + all->set.height / 2;
 	if (ray->wall_s < 0)
 		ray->wall_s = 0;
 	ray->wall_e = ray->wall_h / 2 + all->set.height / 2;
-	if (ray->wall_e >= all->set.height)
+	if (ray->wall_e > all->set.height)
 		ray->wall_e = all->set.height;
 }
 void textures_draw(t_all *all, t_ray *ray, t_texture *img)
@@ -364,9 +448,29 @@ void ray_cast(t_all *all, t_ray *ray)
 	while (ray->hit == 0)
 	{
 		dda(ray);
+		if (all->set.map[ray->map_y][ray->map_x] == '2')
+			sprite_base(all, ray);
 		if(all->set.map[ray->map_y][ray->map_x] == '1')
 			ray->hit = 1;
 	}
 	walls(all, ray);
 	draw_line(all, ray);
+}
+
+void sprite_base(t_all *all, t_ray *ray)
+{
+	t_sprite *temp;
+
+	temp = all->spr.head;
+
+	while (temp->used == 1)
+	{
+		if (temp->x == ray->map_x  && temp->y == ray->map_y)
+			return;
+		temp = temp->next;
+	}
+	temp->x = ray->map_x;
+	temp->y = ray->map_y;
+	temp->used = 1;
+	++all->spr.used;
 }
