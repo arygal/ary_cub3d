@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 18:14:00 by megen             #+#    #+#             */
-/*   Updated: 2021/04/03 19:30:44 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/16 22:00:52 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,54 +42,55 @@ int mlx_get_pixel_color(t_texture *img, int width,int height)
 	return(argb);
 }
 
-int free_sprites_list(t_sprites *list)
+// int free_sprites_list(t_sprites *list)
+// {
+// 	t_sprite *temp;
+
+// 	if (list->head == NULL)
+// 		return(0);
+// 	while(list->head)
+// 	{
+// 		temp = list->head;
+// 		list->head = list->head->next;
+// 		free(temp);
+// 	}
+// 	return(0);
+// }
+
+// t_sprite *sprite_node()
+// {
+// 	t_sprite *node;
+
+// 	if (!(node = malloc(sizeof(t_sprite))))
+// 		return(NULL);
+// 	node->used = 0;
+// 	node->next = NULL;
+// 	return(node);
+// }
+
+bool sprites_init(t_sprites *list, int size ,int height)
 {
-	t_sprite *temp;
-
-	if (list->head == NULL)
-		return(0);
-	while(list->head)
-	{
-		temp = list->head;
-		list->head = list->head->next;
-		free(temp);
-	}
-	return(0);
-}
-
-t_sprite *sprite_node()
-{
-	t_sprite *node;
-
-	if (!(node = malloc(sizeof(t_sprite))))
-		return(NULL);
-	node->used = 0;
-	node->next = NULL;
-	return(node);
-}
-
-bool srites_init(t_sprites *list, int size)
-{
-	t_sprite *node;
+	t_sprite **index;
 	int ct;
-
+	
+	list->line_y = ft_calloc(height, sizeof(char));
+	if (list->line_y == NULL)
+		return(false);
 	ct = -1;
+	index = malloc (sizeof(t_sprite *) * (size));
+	if (index == NULL)
+		return(false);
+	index[size] = NULL;
 	list->used = 0;
-	list->head = NULL;
 	while (++ct != size)
 	{
-		node = sprite_node();
-		if (node == NULL)
-			return(free_sprites_list(list));
-		if (list->head == NULL)
-			{
-				list->head = node;
-				list->tail = node;
-				continue;
-			}
-		list->tail->next = node;
-		list->tail = node;
+		index[ct] = malloc (sizeof(t_sprite));
+		if (index[ct] == NULL)
+			return(false);
+		index[ct]->used = 0;
+			//TODO proper free if fails;
 	}
+	list->index = index;
 	return(true);
 }
 
@@ -115,7 +116,7 @@ void draw_canwas(t_all *all)
 
 int exit_game_alt(t_all *all)
 {
-	free_sprites_list(&all->spr);
+	// free_sprites_list(&all->spr);
 	free_set(&all->set);
 	exit(0);
 }
@@ -253,7 +254,7 @@ bool		game(t_all *all)
 {	
 	 if(!(all->spr.buf = malloc(sizeof(double) * all->set.width)))
 	 	return(false);
-	if (!(srites_init(&all->spr, all->set.sprites)))
+	if (!(sprites_init(&all->spr, all->set.sprites, all->set.height)))
 		return(false);
 	all->lib.mlx = all->set.textures.mlx;
 	if (!(all->lib.win = mlx_new_window(all->lib.mlx, all->set.width, all->set.height, "cub3d")))
@@ -305,7 +306,6 @@ int	ray_start(t_all *all)
 		{
 			while (++ray.line < all->set.width)
 					ray_cast(all, &ray);
-			draw_sprites_head(all);
 		}
 	if (ray.line == -1)		
 		draw_canwas(all);
@@ -398,20 +398,25 @@ void textures_draw(t_all *all, t_ray *ray, t_texture *img)
 	y = -1;
 	color = all->set.ceiling;
 	while (++y < ray->wall_s)
-		mlx_draw_pixel(&all->img, ray->line, y, color);
+		if (all->spr.line_y[y] == 0)
+			mlx_draw_pixel(&all->img, ray->line, y, color);
 	while(y < ray->wall_e)
 	{
 		ray->tex_y = (int)ray->tex_p & (img->h - 1);
 		ray->tex_p = ray->tex_p + ray->tex_s;
-		color = mlx_get_pixel_color(img, ray->tex_x, ray->tex_y);
-		mlx_draw_pixel(&all->img, ray->line , y , color);
+		if (all->spr.line_y[y] == 0)
+		{
+			color = mlx_get_pixel_color(img, ray->tex_x, ray->tex_y);
+			mlx_draw_pixel(&all->img, ray->line , y , color);
+		}
 		++y;
 	}
 	color = all->set.floor;
-	while (y < all->set.height)
+	while (++y <= all->set.height)
 	{
-		mlx_draw_pixel(&all->img, ray->line, y, color);
-		y++;
+		if (all->spr.line_y[y - 1] != 0)
+				continue ;
+		mlx_draw_pixel(&all->img, ray->line, y - 1, color);
 	}
 }
 
@@ -454,23 +459,32 @@ void ray_cast(t_all *all, t_ray *ray)
 			ray->hit = 1;
 	}
 	walls(all, ray);
-	draw_line(all, ray);
+	if (all->spr.used != 0)
+	{
+		draw_sprites_head(all, ray->line);
+		draw_line(all, ray);
+		ft_bzero(all->spr.line_y , all->set.height);
+	}
+	else
+		draw_line(all, ray);
 }
 
 void sprite_base(t_all *all, t_ray *ray)
 {
-	t_sprite *temp;
+	int ct;
 
-	temp = all->spr.head;
-
-	while (temp->used == 1)
+	ct = 0;
+	while (all->spr.index[ct]->used == 1)
 	{
-		if (temp->x == ray->map_x  && temp->y == ray->map_y)
-			return;
-		temp = temp->next;
+		if (all->spr.index[ct]->x == ray->map_x && 	all->spr.index[ct]->y == ray->map_y)
+			return ;
+		ct++;
+	if (all->spr.index[ct] == NULL)
+			return ;
 	}
-	temp->x = ray->map_x;
-	temp->y = ray->map_y;
-	temp->used = 1;
+	all->spr.index[ct]->x = ray->map_x;
+	all->spr.index[ct]->y = ray->map_y;
+	all->spr.index[ct]->used = 1;
 	++all->spr.used;
+	//TODO: USE 1 DOG for ALL
 }

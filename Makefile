@@ -35,7 +35,7 @@ OBJS = $(SRCS:.c=.o)
 $(NAME): libft mlx
 	$(CC) $(CFLAGS) $(OFLAGS) $(SRCS)
 
-all: libft $(NAME)
+all:  $(NAME)
 
 libft:
 	make -C $(LIBFT)

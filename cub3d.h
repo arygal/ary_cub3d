@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 20:36:38 by megen             #+#    #+#             */
-/*   Updated: 2021/04/03 19:34:05 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/16 20:50:55 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdbool.h>
-# include <mlx.h>
+# include "mlx/mlx.h"
 # include <math.h>
 
 # ifndef move
@@ -34,7 +34,7 @@
 /* GNL header */
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 32
+#  define BUFFER_SIZE 8192
 # endif
 
 
@@ -145,7 +145,6 @@ typedef struct			s_mlx
 
 typedef struct s_sprite
 {
-	struct s_sprite	*next;
 	int				x;
 	int				y;
 	int				used;
@@ -155,9 +154,9 @@ typedef struct s_sprite
 typedef struct s_sprites
 {
 	double				*buf;
-	t_sprite			*head;
-	t_sprite			*tail;
+	t_sprite			**index;
 	int					used;
+	char				*line_y;
 }				t_sprites;
 
 
@@ -226,8 +225,8 @@ typedef	struct			s_spr
 	int					drw_ey;
 	int					tex_x;
 	int					tex_y;
-	int					line;
 	int					scr_x;
+	int					ln;
 }						t_spr;
 
 
@@ -262,7 +261,7 @@ t_texture				*texture_find(t_set *set, char *name);
 /*----------------------game--------------------------------------------------*/
 
 bool					game(t_all *all);
-void 					draw_sprites_head(t_all *all);
+void 					draw_sprites_head(t_all *all, int line);
 int						mlx_get_pixel_color(t_texture *img, int width,int height);
 void					mlx_draw_pixel(t_img *img, int width,int height, int argb);
 #endif
