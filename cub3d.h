@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 20:36:38 by megen             #+#    #+#             */
-/*   Updated: 2021/04/16 20:50:55 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/16 22:44:27 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,15 +147,13 @@ typedef struct s_sprite
 {
 	int				x;
 	int				y;
-	int				used;
 }				t_sprite;
 
 
 typedef struct s_sprites
 {
-	double				*buf;
-	t_sprite			**index;
-	int					used;
+	// double				*buf;
+	t_sprite			index;
 	char				*line_y;
 }				t_sprites;
 
@@ -182,7 +180,7 @@ typedef struct			s_all
 
 typedef struct			s_ray
 {
-	double	*buff;
+	// double	*buff;
 	double	tex_p;
 	double	tex_s;
 	double	cam_x;
@@ -205,7 +203,6 @@ typedef struct			s_ray
 	int		map_y;
 	int		tex_x;
 	int		tex_y;
-	int		hit;
 	int		side;
 	int		line;
 }						t_ray;
@@ -261,7 +258,7 @@ t_texture				*texture_find(t_set *set, char *name);
 /*----------------------game--------------------------------------------------*/
 
 bool					game(t_all *all);
-void 					draw_sprites_head(t_all *all, int line);
+void 					draw_sprites_head(t_all *all, int line, int x, int y);
 int						mlx_get_pixel_color(t_texture *img, int width,int height);
 void					mlx_draw_pixel(t_img *img, int width,int height, int argb);
 #endif

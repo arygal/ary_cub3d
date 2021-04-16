@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 18:14:00 by megen             #+#    #+#             */
-/*   Updated: 2021/04/16 22:00:52 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/16 22:49:24 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,31 +68,31 @@ int mlx_get_pixel_color(t_texture *img, int width,int height)
 // 	return(node);
 // }
 
-bool sprites_init(t_sprites *list, int size ,int height)
-{
-	t_sprite **index;
-	int ct;
+// bool sprites_init(t_sprites *list, int size ,int height)
+// {
+// 	t_sprite *index;
+// 	int ct;
 	
-	list->line_y = ft_calloc(height, sizeof(char));
-	if (list->line_y == NULL)
-		return(false);
-	ct = -1;
-	index = malloc (sizeof(t_sprite *) * (size));
-	if (index == NULL)
-		return(false);
-	index[size] = NULL;
-	list->used = 0;
-	while (++ct != size)
-	{
-		index[ct] = malloc (sizeof(t_sprite));
-		if (index[ct] == NULL)
-			return(false);
-		index[ct]->used = 0;
-			//TODO proper free if fails;
-	}
-	list->index = index;
-	return(true);
-}
+// 	list->line_y = ft_calloc(height, sizeof(char));
+// 	if (list->line_y == NULL)
+// 		return(false);
+	// ct = -1;
+	// index = malloc (sizeof(t_sprite *) * (size));
+	// if (index == NULL)
+	// 	return(false);
+	// index[size] = NULL;
+	// list->used = 0;
+	// while (++ct != size)
+	// {
+	// 	index[ct] = malloc (sizeof(t_sprite));
+	// 	if (index[ct] == NULL)
+	// 		return(false);
+	// 	index[ct]->used = 0;
+	// 		//TODO proper free if fails;
+	// }
+	// list->index = index;
+// 	return(true);
+// }
 
 void draw_canwas(t_all *all)
 {
@@ -252,9 +252,10 @@ void player_init(t_p *plr, int spawn)
 // TODO : ERROR HANDLING!
 bool		game(t_all *all)
 {	
-	 if(!(all->spr.buf = malloc(sizeof(double) * all->set.width)))
-	 	return(false);
-	if (!(sprites_init(&all->spr, all->set.sprites, all->set.height)))
+	//  if(!(all->spr.buf = malloc(sizeof(double) * all->set.width)))
+	//  	return(false);
+	all->spr.line_y = ft_calloc(all->set.height, sizeof(char));
+	if (all->spr.line_y == NULL)
 		return(false);
 	all->lib.mlx = all->set.textures.mlx;
 	if (!(all->lib.win = mlx_new_window(all->lib.mlx, all->set.width, all->set.height, "cub3d")))
@@ -294,7 +295,7 @@ int	ray_start(t_all *all)
 	double		y;
 	double		x;
 
-	ray.buff = all->spr.buf;
+	// ray.buff = all->spr.buf;
 	y = (double)arr_len(all->set.map);
 	if (all->plr.pos_y > 1.0 && all->plr.pos_y < y)
 		x = ft_strlen(all->set.map[(int)all->plr.pos_y]);
@@ -324,7 +325,6 @@ void inits(t_all *all, t_ray *ray)
 	ray->dir_y = all->plr.dir_y + all->plr.plane_y * ray->cam_x;
 	ray->dd_x = fabs(1 / ray->dir_x);
 	ray->dd_y = fabs(1 / ray->dir_y);
-	ray->hit = 0;
 }
 
 void step_prep(t_ray *ray)
@@ -379,7 +379,7 @@ void walls(t_all *all, t_ray *ray)
 		ray->wall_d = ((1 - ray->step_x) / 2 + ray->map_x - ray->pos_x) / ray->dir_x;
 	else
 		ray->wall_d = ((1 - ray->step_y) / 2 + ray->map_y - ray->pos_y) / ray->dir_y;
-	ray->buff[ray->line] = ray->wall_d;
+	// ray->buff[ray->line] = ray->wall_d;
 	ray->wall_h = (int)(all->set.height / ray->wall_d);
 	ray->wall_s = -ray->wall_h / 2 + all->set.height / 2;
 	if (ray->wall_s < 0)
@@ -450,41 +450,15 @@ void ray_cast(t_all *all, t_ray *ray)
 {
 	inits(all, ray);
 	step_prep(ray);
-	while (ray->hit == 0)
+	while (all->set.map[ray->map_y][ray->map_x] != '1')
 	{
 		dda(ray);
 		if (all->set.map[ray->map_y][ray->map_x] == '2')
-			sprite_base(all, ray);
-		if(all->set.map[ray->map_y][ray->map_x] == '1')
-			ray->hit = 1;
+			draw_sprites_head(all, ray->line, ray->map_x, ray->map_y);
 	}
 	walls(all, ray);
-	if (all->spr.used != 0)
-	{
-		draw_sprites_head(all, ray->line);
-		draw_line(all, ray);
-		ft_bzero(all->spr.line_y , all->set.height);
-	}
-	else
-		draw_line(all, ray);
-}
 
-void sprite_base(t_all *all, t_ray *ray)
-{
-	int ct;
+	draw_line(all, ray);
+	ft_bzero(all->spr.line_y , all->set.height);
 
-	ct = 0;
-	while (all->spr.index[ct]->used == 1)
-	{
-		if (all->spr.index[ct]->x == ray->map_x && 	all->spr.index[ct]->y == ray->map_y)
-			return ;
-		ct++;
-	if (all->spr.index[ct] == NULL)
-			return ;
-	}
-	all->spr.index[ct]->x = ray->map_x;
-	all->spr.index[ct]->y = ray->map_y;
-	all->spr.index[ct]->used = 1;
-	++all->spr.used;
-	//TODO: USE 1 DOG for ALL
 }
