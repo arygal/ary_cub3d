@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   func_head.c                                        :+:      :+:    :+:   */
+/*   add_func.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 21:19:10 by megen             #+#    #+#             */
-/*   Updated: 2021/03/31 18:14:42 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/19 21:20:11 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	i_strcmp(char *line1, char *line2)
 	return(1);
 }
 
-/* compares line1 and line2  1 if they are same */
+/* compares line1 and line2 and returns 1 if they are same */
 
 
 int clear_atoui(char *line)

@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/23 16:30:03 by megen             #+#    #+#             */
-/*   Updated: 2021/04/01 19:23:16 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/19 17:38:34 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,19 +70,19 @@ bool map_chek(t_set *set , int x, int y)
 	int len1;
 	int len2;
 
-	while(set->map[++y + 1] != NULL)
+	while(set->m[++y + 1] != NULL)
 	{
-		len1 = ft_strlen(set->map[y - 1]);
-		len2 = ft_strlen(set->map[y + 1]);
-		while(set->map[y][++x + 1] != '\0')
+		len1 = ft_strlen(set->m[y - 1]);
+		len2 = ft_strlen(set->m[y + 1]);
+		while(set->m[y][++x + 1] != '\0')
 		{
-			if (set->map[y][x] == '2' || set->map[y][x] == '0' || set->map[y][x] == set->spawn)
+			if (set->m[y][x] == '2' || set->m[y][x] == '0' || set->m[y][x] == set->s)
 				{
-					if ((x >= len1 || set->map[y + 1][x] == ' ') 
-					|| (x >= len2 || set->map[y - 1][x] == ' ') 
-					|| (set->map[y][x + 1] == ' ') || (set->map[y][x - 1] == ' '))
+					if ((x >= len1 || set->m[y + 1][x] == ' ') 
+					|| (x >= len2 || set->m[y - 1][x] == ' ') 
+					|| (set->m[y][x + 1] == ' ') || (set->m[y][x - 1] == ' '))
 						return(false);
-					if(set->map[y][x] == set->spawn)
+					if(set->m[y][x] == set->s)
 					{
 							set->spawn_x = x;
 							set->spawn_y = y;
@@ -91,33 +91,33 @@ bool map_chek(t_set *set , int x, int y)
 		}
 		x = 0;
 	}
-	return(map_chek_add(set->map));
+	return(map_chek_add(set->m));
 }
 
-bool		map_line_check(t_set *set,char *line)
+bool		map_line_check(t_set *set,char *ln)
 {
-	if (*line != '1' && *line != ' ')
+	if (*ln != '1' && *ln != ' ')
 		return(false);
-	while (*line)
+	while (*ln)
 	{
-		if (*line == '2')
+		if (*ln == '2')
 			++set->sprites;
-		if (*line == 'N' || *line == 'W' || *line == 'S' || *line == 'E')
+		if (*ln == 'N' || *ln == 'W' || *ln == 'S' || *ln == 'E')
 			{
-				if (set->spawn == 0)
+				if (set->s == 0)
 				{
-					set->spawn = *line;
-					++line;
+					set->s = *ln;
+					++ln;
 					continue;
 				}
 					return(false);
 			}
-		if (*line != '0' && *line != '1' && *line != '2' && *line != ' ')
+		if (*ln != '0' && *ln != '1' && *ln != '2' && *ln != ' ')
 			return(false);
-		++line;
+		++ln;
 	}
-	--line;
-	if (*line != '1' && *line != ' ')
+	--ln;
+	if (*ln != '1' && *ln != ' ')
 		return(false);
 	return(true);
 }

@@ -6,21 +6,23 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 19:27:53 by megen             #+#    #+#             */
-/*   Updated: 2021/03/29 20:32:46 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/20 18:07:18 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static bool	make_textures_node(void *mlx ,t_texture **node , char *path , char *name)
+static bool	make_textures_node(void *mlx ,t_texture **node
+, char *path , char *name)
 {
-	if (!(*node = malloc(sizeof(t_texture))))
+	*node = malloc(sizeof(t_texture));
+	if (*node == NULL)
 		return(false);
-	
 	(*node)->img = mlx_xpm_file_to_image(mlx, path, &(*node)->w, &(*node)->h);
 	if ((*node)->img == NULL)
 		return(i_free(*node));
-	(*node)->adr = mlx_get_data_addr((*node)->img, &(*node)->bpp, &(*node)->len, &(*node)->end);
+	(*node)->adr = mlx_get_data_addr((*node)->img,
+	&(*node)->bpp, &(*node)->len, &(*node)->end);
 	if ((*node)->adr == NULL)
 	{
 		mlx_destroy_image(mlx,(*node)->img);

@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 21:33:55 by megen             #+#    #+#             */
-/*   Updated: 2021/04/01 19:24:44 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/19 17:39:52 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static bool map_assemley(t_set *set,t_map_list *map_src)
 	t_map_node *temp;
 
 	ct = 0;
-	if (!(map = malloc(sizeof(char *) * (map_src->len + 1))))
+	map = malloc(sizeof(char *) * (map_src->len + 1));
+	if (map == NULL)
 		return(false);
 	while(map_src->head != NULL)
 	{
@@ -31,7 +32,7 @@ static bool map_assemley(t_set *set,t_map_list *map_src)
 		free(temp);
 	}
 	map[ct] = NULL;
-	set->map = map;
+	set->m = map;
 	return(true);
 }
 
@@ -72,7 +73,7 @@ static bool map_proc(t_set *set, t_map_list *map, char *first, int fd)
 			return(false);
 		if (ret < 1)
 			{
-				if (map->len > 2 && ret == 0 && set->spawn != 0)
+				if (map->len > 2 && ret == 0 && set->s != 0)
 					return(true);
 				else
 					return(false);
@@ -97,7 +98,7 @@ bool get_map(t_set *set,int fd)
 				return(false);
 		}
 	map.len = 0;
-	set->spawn = 0;
+	set->s = 0;
 	if (!(map_proc(set, &map, line, fd)))
 		return(free_map_list(&map));
 	if (!(map_assemley(set, &map)))

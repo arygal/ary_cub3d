@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 18:29:06 by megen             #+#    #+#             */
-/*   Updated: 2021/03/28 20:28:58 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/20 18:05:59 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ int free_set(t_set *set)
 {
 	if (set->textures.head != NULL)
 		free_textures_list(set);
-	if (set->map != NULL)
-		split_free(set->map);
+	if (set->m != NULL)
+		split_free(set->m);
+	free(set->textures.index);
+	// free(set->textures.mlx);
 	return(0);
 }
 

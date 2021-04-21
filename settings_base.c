@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 17:21:12 by megen             #+#    #+#             */
-/*   Updated: 2021/03/31 20:05:09 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/19 17:44:31 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static bool		index_textures(t_set *set)
 {
 	t_texture *temp;
 
-	if (!(set->textures.index = malloc(sizeof(t_texture *) * set->textures.len)))
+	set->textures.index = malloc(sizeof(t_texture *) * set->textures.len);
+	if (set->textures.index == NULL)
 		return(false);
 	temp = texture_find(set, "EA");
 	set->textures.index[0] = temp;
@@ -63,7 +64,7 @@ static bool get_settings_chek(t_set *set)
 static bool get_settings_hub (t_set *set, int fd)
 {
 	char *line;
-	char **split;
+	char **s;
 
 	if (get_next_line(fd, &line) <= 0)
 		return(false);
@@ -73,19 +74,19 @@ static bool get_settings_hub (t_set *set, int fd)
 			if (get_next_line(fd, &line) <= 0)
 				return(false);
 		}
-	split = ft_split(line , ' ');
-	if (*split == NULL)
+	s = ft_split(line , ' ');
+	if (*s == NULL)
 		return(i_free(line));
-	if (split[1] == NULL)
-		return(split_free(split));
+	if (s[1] == NULL)
+		return(split_free(s));
 	free(line);
-	if (split[0][0] == 'R' && split[0][1] == '\0' && set->height == -1 && split[2] != NULL)
-		return (get_res(set, split));
-	if (split[0][0] == 'C' && split[0][1] == '\0' && set->ceiling == -1 && split[2] == NULL)
-		return (get_color(set, split, 'C'));
-	if (split[0][0] == 'F' && split[0][1] == '\0' && set->floor == -1 && split[2] == NULL)
-		return (get_color(set, split, 'F'));
-	return(get_textures(set, split));
+	if (s[0][0] == 'R' && s[0][1] == '\0' && set->height == -1 && s[2] != NULL)
+		return (get_res(set, s));
+	if (s[0][0] == 'C' && s[0][1] == '\0' && set->ceiling == -1 && s[2] == NULL)
+		return (get_color(set, s, 'C'));
+	if (s[0][0] == 'F' && s[0][1] == '\0' && set->floor == -1 && s[2] == NULL)
+		return (get_color(set, s, 'F'));
+	return(get_textures(set, s));
 }
 
 bool get_settings(t_set *set, int fd)
@@ -96,7 +97,7 @@ bool get_settings(t_set *set, int fd)
 	set->height = -1;
 	set->textures.head = NULL;
 	set->textures.tail = NULL;
-	set->map = NULL;
+	set->m = NULL;
 	set->textures.len = 0;
 	set->textures.mlx = NULL;
 	set->textures.index = NULL;

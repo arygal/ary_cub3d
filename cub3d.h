@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 20:36:38 by megen             #+#    #+#             */
-/*   Updated: 2021/04/16 22:44:27 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/21 16:50:01 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 #  define turn 0.05
 # endif
 
+# ifndef TR_COLOR
+#  define TR_COLOR 9961608
+# endif 
 
 /* GNL header */
 
@@ -82,6 +85,7 @@ typedef struct			s_texture_list
 	t_texture			*head;
 	t_texture			*tail;
 	t_texture			**index;
+	t_texture			*act;
 	int					len;
 	void				*mlx;
 }						t_texture_list;
@@ -94,10 +98,11 @@ typedef struct			s_set
 	int					floor;
 	int					ceiling;
 	int					sprites;
-	int					spawn;
+	int					s;
 	int					spawn_x;
 	int					spawn_y;
-	char				**map;
+	char				**m;
+	bool				bmp;
 }						t_set;
 
 typedef struct			s_map_node
@@ -152,7 +157,6 @@ typedef struct s_sprite
 
 typedef struct s_sprites
 {
-	// double				*buf;
 	t_sprite			index;
 	char				*line_y;
 }				t_sprites;
@@ -162,6 +166,8 @@ typedef struct s_keys
 {
 	bool up;
 	bool down;
+	bool left;
+	bool right;
 	bool rot_left;
 	bool rot_right;
 }				t_keys;
@@ -253,12 +259,34 @@ bool					get_textures(t_set *set,char **split);
 int						free_textures_list(t_set *set);
 int 					free_map_list(t_map_list *map);
 int						free_set(t_set *set);
+void					screen_res(t_all * all);
 t_texture				*texture_find(t_set *set, char *name);
 
-/*----------------------game--------------------------------------------------*/
+/*----------------------ray_cast---------------------------------------------*/
+
+void					step_prep(t_ray *ray);
+void					dda(t_ray *ray);
+void					walls(t_all *all, t_ray *ray);
+void					sprites(t_all *all, t_spr *spr, int x , int y);
+void					line(t_all *all, t_ray *ray);
+
+/*----------------------inits------------------------------------------------*/
+
+void					base_inits(t_all *all);
+void					inits(t_all *all, t_ray *ray);
+void					player_init(t_p *plr, int spawn,int x,int y);
+
+/*----------------------game-------------------------------------------------*/
 
 bool					game(t_all *all);
-void 					draw_sprites_head(t_all *all, int line, int x, int y);
-int						mlx_get_pixel_color(t_texture *img, int width,int height);
-void					mlx_draw_pixel(t_img *img, int width,int height, int argb);
+int						exit_game(t_all *all);
+void					draw_sprites(t_all *all, t_spr *spr,int x , int y);
+void					draw_textures(t_all *all, t_ray *ray, int y, int c);
+void					draw_canwas(t_all *all);
+void					ray_cast(t_all *all, t_ray *ray);
+bool					screenshot(t_img *img, int x, int y, bool *s);
+int						controls_press(int key, t_all *all);
+int						controls_release(int key, t_all *all);
+void					controls(t_p *plr, t_keys * key);
+
 #endif

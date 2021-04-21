@@ -1,13 +1,13 @@
 
 C         137,155,152 
 
-R     1920                   1080     
-WE /Users/megen/wrekspace/ary_cub3d/textures/wood.xpm
+R      1000  800
+WE textures/wood.xpm
 
-NO /Users/megen/wrekspace/ary_cub3d/textures/metal.xpm
-  SO              /Users/megen/wrekspace/ary_cub3d/textures/grass.xpm
-   EA  /Users/megen/wrekspace/ary_cub3d/textures/brick.xpm 
-S /Users/megen/wrekspace/ary_cub3d/textures/dog.xpm
+NO textures/metal.xpm
+  SO              textures/grass.xpm
+   EA  textures/brick.xpm 
+S textures/dog.xpm
 
 F       137,155,30   
 

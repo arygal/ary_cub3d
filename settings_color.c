@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/21 18:30:55 by megen             #+#    #+#             */
-/*   Updated: 2021/03/29 16:51:33 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/19 21:49:48 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ bool get_color(t_set *set,char **split, int def)
 	if (rgb[0] == NULL || rgb[1] == NULL || rgb[2] == NULL)
 		return(split_free(split));
 	split_free(split);
-	if ((ft_strlen(rgb[0]) > 3) || (ft_strlen(rgb[1]) > 3) || (ft_strlen(rgb[2]) > 3))
+	if ((ft_strlen(rgb[0]) > 3) || (ft_strlen(rgb[1]) > 3)
+	|| (ft_strlen(rgb[2]) > 3))
 		return(split_free(rgb));
 	temp.r = clear_atoui(rgb[0]);
 	temp.g = clear_atoui(rgb[1]);
