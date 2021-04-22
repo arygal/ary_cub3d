@@ -70,7 +70,7 @@ int	controls_press(int key, t_all *all)
 		all->key.down = true;
 	else if (key == 2)
 		all->key.right = true;
-	reTURN (0);
+	return (0);
 }
 
 int	controls_release(int key, t_all *all)
@@ -87,5 +87,5 @@ int	controls_release(int key, t_all *all)
 		all->key.down = false;
 	else if (key == 2)
 		all->key.right = false;
-	reTURN (0);
+	retrun (0);
 }

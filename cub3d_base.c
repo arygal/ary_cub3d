@@ -37,7 +37,7 @@ static int	ray_start(t_all *all)
 	return (1);
 }
 
-static void	sray_cast(t_all *all, t_ray *ray)
+static void	ray_cast(t_all *all, t_ray *ray)
 {
 	t_spr	spr;
 
