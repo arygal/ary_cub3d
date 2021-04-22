@@ -6,15 +6,15 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 13:05:01 by megen             #+#    #+#             */
-/*   Updated: 2021/04/18 20:36:45 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/22 13:56:55 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static int pop_node(t_list *pts)
+static int	pop_node(t_list *pts)
 {
-	t_node *temp;
+	t_node	*temp;
 
 	temp = pts->head;
 	if (pts->head->next)
@@ -32,15 +32,14 @@ static int pop_node(t_list *pts)
 	return (pts->len);
 }
 
-static char *process_pts_alt(t_list *pts, int lnpos)
+static char	*process_pts_alt(t_list *pts, int lnpos, int mv)
 {
-	int linelen;
-	char *ln;
-	int mv;
+	int		linelen;
+	char	*ln;
 
-	mv = 0;
 	linelen = pts->linesz - (pts->tail->valsz - lnpos) - pts->firstch + 1;
-	if (!(ln = malloc(linelen)))
+	ln = malloc(linelen);
+	if (!ln)
 	{
 		while (pts->len != 0)
 			pop_node(pts);
@@ -49,7 +48,7 @@ static char *process_pts_alt(t_list *pts, int lnpos)
 	while (pts->head != pts->tail)
 	{
 		ft_memcpy(ln + mv, pts->head->val + pts->firstch,
-				  pts->head->valsz - pts->firstch);
+			pts->head->valsz - pts->firstch);
 		mv += pts->head->valsz - pts->firstch;
 		pop_node(pts);
 	}
@@ -61,19 +60,22 @@ static char *process_pts_alt(t_list *pts, int lnpos)
 	return (ln);
 }
 
-static int read_to_node(t_node **node, int fd)
+static int	read_to_node(t_node **node, int fd)
 {
-	char *buffer;
-	int ret;
+	char	*buffer;
+	int		ret;
 
-	if (!(buffer = malloc(BUFFER_SIZE)))
+	buffer = malloc(BUFFER_SIZE);
+	if (!buffer)
 		return (-1);
 	ret = read(fd, buffer, BUFFER_SIZE);
-	if (ret > 0 && !(*node = malloc(sizeof(t_node))))
+	(*node) = malloc(sizeof(t_node));
+	if (ret > 0 && !(*node))
 		ret = -1;
 	if (ret > 0)
 		(*node)->valsz = ret;
-	if (ret > 0 && !((*node)->val = malloc((*node)->valsz)))
+	(*node)->val = malloc((*node)->valsz);
+	if (ret > 0 && !((*node)->val))
 	{
 		free(*node);
 		ret = -1;
@@ -87,12 +89,12 @@ static int read_to_node(t_node **node, int fd)
 	return (ret);
 }
 
-static int read_to_list(t_list *pts, int fd)
+static int	read_to_list(t_list *pts, int fd, int ret)
 {
-	t_node *temp;
-	int ret;
+	t_node	*temp;
 
-	if ((ret = read_to_node(&temp, fd)) < 0)
+	ret = read_to_node(&temp, fd);
+	if (ret < 0)
 	{
 		while (pts->len != 0)
 			pop_node(pts);
@@ -114,11 +116,11 @@ static int read_to_list(t_list *pts, int fd)
 	return (pts->len);
 }
 
-int get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
-	static t_list pts;
-	int i;
-	int ret;
+	static t_list	pts;
+	int				i;
+	int				ret;
 
 	if (!line || fd < 0 || BUFFER_SIZE < 1)
 		return (-1);
@@ -127,15 +129,17 @@ int get_next_line(int fd, char **line)
 	{
 		while (pts.len > 0 && (i < pts.tail->valsz || pts.eof))
 		{
-			if ((i >= pts.tail->valsz - 1 && pts.eof) ||
-				pts.tail->val[i++] == '\n')
+			if ((i >= pts.tail->valsz - 1 && pts.eof)
+				|| pts.tail->val[i++] == '\n')
 			{
-				if (!(*line = process_pts_alt(&pts, i - 1)))
+				(*line) = process_pts_alt(&pts, i - 1, 0);
+				if (!(*line))
 					return (-1);
 				return (!pts.eof);
 			}
 		}
-		if ((ret = read_to_list(&pts, fd)) < 0 || (ret + pts.len == 0))
+		ret = read_to_list(&pts, fd, 0);
+		if (ret < 0 || (ret + pts.len == 0))
 			return (((ret < 0) || !(*line = ft_calloc(1, 1))) * -1);
 		i = pts.eof * (pts.tail->valsz + 1);
 	}

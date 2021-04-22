@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void inits(t_all *all, t_ray *ray)
+void	inits(t_all *all, t_ray *ray)
 {
 	ray->pos_x = all->plr.pos_x;
 	ray->pos_y = all->plr.pos_y;
@@ -13,15 +13,15 @@ void inits(t_all *all, t_ray *ray)
 	ray->dd_y = fabs(1 / ray->dir_y);
 }
 
-static void player_init_add(t_p *plr)
+static void	player_init_add(t_p *plr)
 {
 	plr->dir_y = 0.0;
 	plr->dir_x = 1.0;
 	plr->plane_x = 0.0;
-	plr->plane_y = 0.66;		
+	plr->plane_y = 0.66;
 }
 
-void player_init(t_p *plr, int spawn, int x, int y)
+void	player_init(t_p *plr, int spawn, int x, int y)
 {
 	plr->pos_x = (double)x + 0.5;
 	plr->pos_y = (double)y + 0.5;
@@ -32,25 +32,25 @@ void player_init(t_p *plr, int spawn, int x, int y)
 		plr->plane_x = 0.66;
 		plr->plane_y = 0.0;
 	}
-	else if (spawn ==  'S')
+	else if (spawn == 'S')
 	{
 		plr->dir_y = 1.0;
 		plr->dir_x = 0.0;
 		plr->plane_x = -0.66;
-		plr->plane_y = 0.0;		
+		plr->plane_y = 0.0;
 	}
-	else if (spawn ==  'W')
+	else if (spawn == 'W')
 	{
 		plr->dir_y = 0.0;
 		plr->dir_x = -1.0;
 		plr->plane_x = 0.0;
-		plr->plane_y = -0.66;		
+		plr->plane_y = -0.66;
 	}
 	else
 		player_init_add(plr);
 }
 
-void base_inits(t_all *all)
+void	base_inits(t_all *all)
 {
 	all->lib.mlx = all->set.textures.mlx;
 	all->spr.line_y = NULL;

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/15 18:42:48 by megen             #+#    #+#             */
-/*   Updated: 2021/04/21 16:38:43 by megen            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "cub3d.h"
 
 bool	map_proc(t_set *set, char *path)
@@ -18,8 +6,8 @@ bool	map_proc(t_set *set, char *path)
 	int	len;
 
 	len = ft_strlen(path);
-	if (path[len - 1] != 'b' && path[len - 2] != 'u' && path[len - 3] != 'c'
-		&& path[len - 4] != '.')
+	if (path[len - 1] != 'b' && path[len - 2] != 'u' && path[len - 3]
+		!= 'c' && path[len - 4] != '.')
 		return (false);
 	fd = open(path, O_RDONLY);
 	if (fd < 3)
@@ -51,13 +39,13 @@ int	main(int argc, char **argv)
 	if (argc == 3)
 	{
 		if (!(i_strcmp(argv[2], "--save")))
-			return(printf("Error\n %s\n", "Use \"––save\" for screenshot"));
+			return (printf("Error\n %s\n", "Use \"––save\" for screenshot"));
 		all.set.bmp = true;
 	}
 	if (!(map_proc(&all.set, argv[1])))
 		return (printf("Error\n %s\n", "Map file error"));
 	screen_res(&all);
 	if (!(game(&all)))
-		return(exit_game(&all));
+		return (exit_game(&all));
 	return (0);
 }

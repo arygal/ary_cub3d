@@ -1,20 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_strlcat.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/01 19:00:39 by megen             #+#    #+#             */
-/*   Updated: 2020/11/01 19:00:43 by megen            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "libft.h"
 
-static		size_t	ft_strlen_ct(const char *s, size_t ct)
+static size_t	ft_strlen_ct(const char *s, size_t ct)
 {
-	size_t a;
+	size_t	a;
 
 	a = 0;
 	while (a < ct)
@@ -27,10 +15,10 @@ static		size_t	ft_strlen_ct(const char *s, size_t ct)
 	return (a);
 }
 
-size_t				ft_strlcat(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	size_t ds;
-	size_t sr;
+	size_t	ds;
+	size_t	sr;
 
 	sr = ft_strlen(src);
 	ds = ft_strlen_ct(dst, dstsize);

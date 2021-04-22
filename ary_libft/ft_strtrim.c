@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_strtrim.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/15 19:58:17 by megen             #+#    #+#             */
-/*   Updated: 2020/11/15 19:58:18 by megen            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "libft.h"
 
 static	size_t	ft_strtrim_chk(char s, char const *set)
@@ -41,8 +29,8 @@ static	size_t	ft_strtrim_fr(char const *s1, char const *set)
 
 static	size_t	ft_strtrim_bk(char const *s1, char const *set)
 {
-	size_t ret;
-	size_t ct1;
+	size_t	ret;
+	size_t	ct1;
 
 	ct1 = ft_strlen(s1) - 1;
 	ret = 0;
@@ -57,7 +45,7 @@ static	size_t	ft_strtrim_bk(char const *s1, char const *set)
 	return (ret);
 }
 
-char			*ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set)
 {
 	size_t	fr;
 	size_t	bk;

@@ -1,26 +1,12 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   settings_base.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/21 17:21:12 by megen             #+#    #+#             */
-/*   Updated: 2021/04/19 17:44:31 by megen            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "cub3d.h"
 
-// static bool basic_texrues
-
-static bool		index_textures(t_set *set)
+static bool	index_textures(t_set *set)
 {
-	t_texture *temp;
+	t_texture	*temp;
 
 	set->textures.index = malloc(sizeof(t_texture *) * set->textures.len);
 	if (set->textures.index == NULL)
-		return(false);
+		return (false);
 	temp = texture_find(set, "EA");
 	set->textures.index[0] = temp;
 	temp = texture_find(set, "WE");
@@ -31,54 +17,53 @@ static bool		index_textures(t_set *set)
 	set->textures.index[3] = temp;
 	temp = texture_find(set, "S");
 	set->textures.index[4] = temp;
-	return(true);
+	return (true);
 }
 
-static bool		basic_textures_check(t_set *set)
+static bool	basic_textures_check(t_set *set)
 {
 	if (texture_list_name_check(set, "SO"))
-		return(free_set(set));
+		return (free_set(set));
 	if (texture_list_name_check(set, "NO"))
-		return(free_set(set));
+		return (free_set(set));
 	if (texture_list_name_check(set, "EA"))
-		return(free_set(set));
+		return (free_set(set));
 	if (texture_list_name_check(set, "WE"))
-		return(free_set(set));
+		return (free_set(set));
 	if (texture_list_name_check(set, "S"))
-		return(free_set(set));
+		return (free_set(set));
 	if (!(index_textures(set)))
-		return(free_set(set));
-	return(true);
+		return (free_set(set));
+	return (true);
 }
 
-
-static bool get_settings_chek(t_set *set)
+static bool	get_settings_chek(t_set *set)
 {
-	if(set->ceiling == -1 || set->floor == -1 || set->height == -1)
-		return(false);
-	if(set->textures.len != 5)
-		return(false);
-	return(true);
+	if (set->ceiling == -1 || set->floor == -1 || set->height == -1)
+		return (false);
+	if (set->textures.len != 5)
+		return (false);
+	return (true);
 }
 
-static bool get_settings_hub (t_set *set, int fd)
+static bool	get_settings_hub(t_set *set, int fd)
 {
-	char *line;
-	char **s;
+	char	*line;
+	char	**s;
 
 	if (get_next_line(fd, &line) <= 0)
-		return(false);
-	while(*line == '\0')
-		{
-			free(line);
-			if (get_next_line(fd, &line) <= 0)
-				return(false);
-		}
-	s = ft_split(line , ' ');
+		return (false);
+	while (*line == '\0')
+	{
+		free(line);
+		if (get_next_line(fd, &line) <= 0)
+			return (false);
+	}
+	s = ft_split(line, ' ');
 	if (*s == NULL)
-		return(i_free(line));
+		return (i_free(line));
 	if (s[1] == NULL)
-		return(split_free(s));
+		return (split_free(s));
 	free(line);
 	if (s[0][0] == 'R' && s[0][1] == '\0' && set->height == -1 && s[2] != NULL)
 		return (get_res(set, s));
@@ -86,12 +71,11 @@ static bool get_settings_hub (t_set *set, int fd)
 		return (get_color(set, s, 'C'));
 	if (s[0][0] == 'F' && s[0][1] == '\0' && set->floor == -1 && s[2] == NULL)
 		return (get_color(set, s, 'F'));
-	return(get_textures(set, s));
+	return (get_textures(set, s));
 }
 
-bool get_settings(t_set *set, int fd)
+bool	get_settings(t_set *set, int fd)
 {
-
 	set->ceiling = -1;
 	set->floor = -1;
 	set->height = -1;
@@ -102,8 +86,8 @@ bool get_settings(t_set *set, int fd)
 	set->textures.mlx = NULL;
 	set->textures.index = NULL;
 	set->textures.mlx = mlx_init();
-	if(set->textures.mlx == NULL)
-		return(false);
+	if (set->textures.mlx == NULL)
+		return (false);
 	while (true)
 	{
 		if (!(get_settings_hub(set, fd)))

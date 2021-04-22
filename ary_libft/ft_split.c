@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/26 10:57:12 by megen             #+#    #+#             */
-/*   Updated: 2020/11/26 10:57:14 by megen            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "libft.h"
 
 static	size_t	ft_split_wctandpos(char const *s, char c, size_t nc)
@@ -52,10 +40,9 @@ static	char	**ft_split_free(char **ret)
 	return ((void *)0);
 }
 
-static	char	*ft_split_filler(char const *s, char c, size_t nc)
+static	char	*ft_split_filler(char const *s, char c, size_t nc, size_t size)
 {
 	size_t	pos;
-	size_t	size;
 	char	*ret;
 
 	if (nc == 0)
@@ -63,13 +50,13 @@ static	char	*ft_split_filler(char const *s, char c, size_t nc)
 	else
 		pos = ft_split_wctandpos(s, c, nc);
 	s = s + pos;
-	size = 0;
 	while (*s != c && *s != '\0')
 	{
 		s++;
 		size++;
 	}
-	if (!(ret = (char *)ft_calloc(size + 1, sizeof(char))))
+	ret = (char *)ft_calloc(size + 1, sizeof(char));
+	if (!ret)
 		return ((void *)0);
 	pos = 0;
 	s = s - size;
@@ -81,7 +68,7 @@ static	char	*ft_split_filler(char const *s, char c, size_t nc)
 	return (ret);
 }
 
-char			**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	size_t	wct;
 	size_t	nc;
@@ -98,7 +85,7 @@ char			**ft_split(char const *s, char c)
 		return ((void *)0);
 	while (nc < wct)
 	{
-		ret[nc] = ft_split_filler(s, c, nc);
+		ret[nc] = ft_split_filler(s, c, nc, 0);
 		if (!ret[nc])
 			return (ft_split_free(ret));
 		nc++;
