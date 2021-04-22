@@ -9,6 +9,24 @@ int	exit_game(t_all *all)
 	exit(0);
 }
 
+static void	ray_cast(t_all *all, t_ray *ray)
+{
+	t_spr	spr;
+
+	spr.ln = ray->line;
+	inits(all, ray);
+	step_prep(ray);
+	while (all->set.m[ray->map_y][ray->map_x] != '1')
+	{
+		dda(ray);
+		if (all->set.m[ray->map_y][ray->map_x] == '2')
+			sprites(all, &spr, ray->map_x, ray->map_y);
+	}
+	walls(all, ray);
+	line(all, ray);
+	ft_bzero(all->spr.line_y, all->set.height);
+}
+
 static int	ray_start(t_all *all)
 {
 	t_ray	ray;
@@ -35,24 +53,6 @@ static int	ray_start(t_all *all)
 	mlx_put_image_to_window(all->lib.mlx, all->lib.win, all->img.img, 0, 0);
 	controls(&all->plr, &all->key);
 	return (1);
-}
-
-static void	ray_cast(t_all *all, t_ray *ray)
-{
-	t_spr	spr;
-
-	spr.ln = ray->line;
-	inits(all, ray);
-	step_prep(ray);
-	while (all->set.m[ray->map_y][ray->map_x] != '1')
-	{
-		dda(ray);
-		if (all->set.m[ray->map_y][ray->map_x] == '2')
-			sprites(all, &spr, ray->map_x, ray->map_y);
-	}
-	walls(all, ray);
-	line(all, ray);
-	ft_bzero(all->spr.line_y, all->set.height);
 }
 
 bool	game(t_all *all)

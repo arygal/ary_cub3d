@@ -87,5 +87,5 @@ int	controls_release(int key, t_all *all)
 		all->key.down = false;
 	else if (key == 2)
 		all->key.right = false;
-	retrun (0);
+	return (0);
 }
