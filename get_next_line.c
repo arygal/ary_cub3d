@@ -6,7 +6,7 @@
 /*   By: megen <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 13:05:01 by megen             #+#    #+#             */
-/*   Updated: 2021/04/22 13:56:55 by megen            ###   ########.fr       */
+/*   Updated: 2021/04/22 18:52:03 by megen            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,40 +60,41 @@ static char	*process_pts_alt(t_list *pts, int lnpos, int mv)
 	return (ln);
 }
 
-static int	read_to_node(t_node **node, int fd)
+static void	read_to_node(t_node **node, int fd, int *ret, char *buffer)
 {
-	char	*buffer;
-	int		ret;
-
 	buffer = malloc(BUFFER_SIZE);
-	if (!buffer)
-		return (-1);
-	ret = read(fd, buffer, BUFFER_SIZE);
-	(*node) = malloc(sizeof(t_node));
-	if (ret > 0 && !(*node))
-		ret = -1;
-	if (ret > 0)
-		(*node)->valsz = ret;
-	(*node)->val = malloc((*node)->valsz);
-	if (ret > 0 && !((*node)->val))
+	if (buffer == NULL)
+		return ;
+	*ret = read(fd, buffer, BUFFER_SIZE);
+	if (*ret > 0)
+		(*node) = malloc(sizeof(t_node));
+	if (!(*node))
+		*ret = -1;
+	if (*ret > 0)
+	{
+		(*node)->valsz = *ret;
+		(*node)->val = malloc((*node)->valsz);
+	}
+	if (*ret > 0 && !((*node)->val))
 	{
 		free(*node);
-		ret = -1;
+		*ret = -1;
 	}
-	if (ret > 0)
+	if (*ret > 0)
 	{
 		ft_memcpy((*node)->val, buffer, (*node)->valsz);
 		(*node)->next = NULL;
 	}
 	free(buffer);
-	return (ret);
 }
 
 static int	read_to_list(t_list *pts, int fd, int ret)
 {
 	t_node	*temp;
+	char	*buffer;
 
-	ret = read_to_node(&temp, fd);
+	buffer = NULL;
+	read_to_node(&temp, fd, &ret, buffer);
 	if (ret < 0)
 	{
 		while (pts->len != 0)
@@ -122,7 +123,7 @@ int	get_next_line(int fd, char **line)
 	int				i;
 	int				ret;
 
-	if (!line || fd < 0 || BUFFER_SIZE < 1)
+	if (!line || fd < -1 || BUFFER_SIZE < 1)
 		return (-1);
 	i = pts.firstch;
 	while (1)
@@ -138,7 +139,7 @@ int	get_next_line(int fd, char **line)
 				return (!pts.eof);
 			}
 		}
-		ret = read_to_list(&pts, fd, 0);
+		ret = read_to_list(&pts, fd, -1);
 		if (ret < 0 || (ret + pts.len == 0))
 			return (((ret < 0) || !(*line = ft_calloc(1, 1))) * -1);
 		i = pts.eof * (pts.tail->valsz + 1);

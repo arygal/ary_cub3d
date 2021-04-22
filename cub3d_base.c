@@ -2,10 +2,13 @@
 
 int	exit_game(t_all *all)
 {
+	char	*line;
+
 	mlx_destroy_image(all->lib.mlx, all->img.img);
 	mlx_destroy_window(all->lib.mlx, all->lib.win);
 	free(all->spr.line_y);
 	free_set(&all->set);
+	get_next_line(-1, &line);
 	exit(0);
 }
 
