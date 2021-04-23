@@ -61,22 +61,19 @@ static bool	map_proc(t_set *set, t_map_list *map, char *first, int fd)
 	map->head = NULL;
 	line = first;
 	set->sprites = 0;
-	while (true)
+	while (*line != '\0')
 	{
-		if (*line != '\0')
-			if (!(map_line_check(set, line)))
-				return (i_free(line));
+		if (!(map_line_check(set, line)))
+			return (i_free(line));
 		if (!(add_to_map_list(map, line)))
 			return (false);
-		if (ret < 1)
-		{
-			if (map->len > 2 && ret == 0 && set->s != 0)
-				return (true);
-			else
-				return (false);
-		}
+		if (map->len > 2 && ret == 0 && set->s != 0)
+			return (true);
 		ret = get_next_line(fd, &line);
+		if (ret < 0)
+			return (false);
 	}
+	return (false);
 }
 
 bool	get_map(t_set *set, int fd)

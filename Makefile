@@ -13,7 +13,9 @@ RM = rm -f
 
 CFLAGS = -Wall -Wextra -Werror
 
-OFLAGS = -O2
+OFLAGS = #-O2
+
+DFLAGS = -g
 
 LFLAGS =	-L $(LIBFT) -lft \
 			-L $(MLX) -lmlx -framework OpenGL -framework AppKit \
@@ -42,7 +44,7 @@ DINF = $(patsubst %.c,%.d,$(SRCS))
 $(NAME): $(OBJS)
 	make -C $(LIBFT)
 	make -C $(MLX) all
-	$(CC) $(CFLAGS)  $(LFLAGS) $(OFLAGS)  $(OBJS) $(NAME)
+	$(CC) $(CFLAGS)  $(LFLAGS) $(OFLAGS) $(OBJS) -o $(NAME)
 
 all:  $(NAME)
 
@@ -51,6 +53,11 @@ all:  $(NAME)
 
 include $(wildcard $(DINF))
 
+debug: 
+	make -C $(LIBFT)
+	make -C $(MLX) all
+	$(CC) $(CFLAGS) $(LFLAGS) $(DFLAGS) $(SRCS) -o $(NAME)
+
 clean:
 	$(RM) $(OBJS) $(DINF)
 	make -C $(LIBFT) clean
@@ -58,6 +65,7 @@ clean:
 
 fclean: clean
 	$(RM) $(NAME) $(DINF)
+	$(RM) img.bmp
 	make -C $(LIBFT) fclean
 	make -C $(MLX) clean
 
