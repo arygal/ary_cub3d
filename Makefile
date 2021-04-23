@@ -1,20 +1,21 @@
 
-HEADER =	cub3d.h 
+# HEADER =	cub3d.h 
 
 NAME = cub3d
 
-LIBFT = ./ary_libft
+LIBFT = ./libft
 
 MLX = ./mlx	
 
 CC = gcc
 
-RM = rm -rf
+RM = rm -f
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 
-OFLAGS =	-I $(HEADER) \
-			-L $(LIBFT) -lft \
+OFLAGS = -O2
+
+LFLAGS =	-L $(LIBFT) -lft \
 			-L $(MLX) -lmlx -framework OpenGL -framework AppKit \
 
 SRCS =	main.c\
@@ -34,25 +35,31 @@ SRCS =	main.c\
 		cub3d_draw.c\
 		cub3d_controls.c\
 
-OBJS = $(SRCS:.c=.o)
+OBJS = $(patsubst %.c,%.o,$(SRCS))
 
-$(NAME): mlx libft
-	$(CC) $(CFLAGS) $(OFLAGS) $(SRCS)
+DINF = $(patsubst %.c,%.d,$(SRCS))
+
+$(NAME): $(OBJS)
+	make -C $(LIBFT)
+	make -C $(MLX) all
+	$(CC) $(CFLAGS)  $(LFLAGS) $(OFLAGS)  $(OBJS) $(NAME)
 
 all:  $(NAME)
 
-libft:
-	make -C $(LIBFT)
-mlx:
-	make -C $(MLX)
+%.o : %.c
+	$(CC) $(CFLAGS) $(OFLAGS) -c $< -o $@ -MD
+
+include $(wildcard $(DINF))
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(OBJS) $(DINF)
 	make -C $(LIBFT) clean
+	make -C $(MLX) clean
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(DINF)
 	make -C $(LIBFT) fclean
+	make -C $(MLX) clean
 
 re: fclean all
 
