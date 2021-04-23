@@ -52,7 +52,7 @@ static int	ray_start(t_all *all)
 		draw_canwas(all);
 	if (all->set.bmp == true)
 		screenshot(&all->img, all->set.width - 1,
-			all->set.height - 1, &all->set.bmp);
+			all->set.height - 1, all);
 	mlx_put_image_to_window(all->lib.mlx, all->lib.win, all->img.img, 0, 0);
 	controls(&all->plr, &all->key);
 	return (1);

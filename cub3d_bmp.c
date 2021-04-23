@@ -29,16 +29,15 @@ static void	bmp_header(int fd, int x, int y, int bpp)
 	write(fd, "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 28);
 }
 
-bool	screenshot(t_img *img, int x, int y, bool *s)
+bool	screenshot(t_img *img, int x, int y, t_all *all)
 {
 	int	fd;
 	int	sx;
 
-	*s = false;
 	sx = 0;
 	fd = open("img.bmp", O_CREAT | O_RDWR);
 	if (fd < 0)
-		return (false);
+		return (exit_game(all));
 	bmp_header(fd, x, y, img->bpp);
 	while (y != 0)
 	{
@@ -51,5 +50,6 @@ bool	screenshot(t_img *img, int x, int y, bool *s)
 		--y;
 	}
 	close(fd);
+	exit_game(all);
 	return (true);
 }

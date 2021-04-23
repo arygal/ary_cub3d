@@ -258,7 +258,7 @@ int						exit_game(t_all *all);
 void					draw_sprites(t_all *all, t_spr *spr, int x, int y);
 void					draw_textures(t_all *all, t_ray *ray, int y, int c);
 void					draw_canwas(t_all *all);
-bool					screenshot(t_img *img, int x, int y, bool *s);
+bool					screenshot(t_img *img, int x, int y, t_all *all);
 int						controls_press(int key, t_all *all);
 int						controls_release(int key, t_all *all);
 void					controls(t_p *plr, t_keys *key);
