@@ -53,10 +53,10 @@ all:  $(NAME)
 
 include $(wildcard $(DINF))
 
-debug: 
-	make -C $(LIBFT)
-	make -C $(MLX) all
-	$(CC) $(CFLAGS) $(LFLAGS) $(DFLAGS) $(SRCS) -o $(NAME)
+#debug: 
+#	make -C $(LIBFT)
+#	make -C $(MLX) all
+#	$(CC) $(CFLAGS) $(LFLAGS) $(DFLAGS) $(SRCS) -o $(NAME)
 
 clean:
 	$(RM) $(OBJS) $(DINF)
